@@ -1,0 +1,110 @@
+{
+  "app": {
+    "layout.tsx": {},
+    "page.tsx": {},
+
+    "paket": {
+      "page.tsx": {},
+      "[slug]": {
+        "page.tsx": {}
+      }
+    },
+
+    "daftar": {
+      "page.tsx": {}
+    },
+
+    "admin": {
+      "login": {
+        "page.tsx": {}
+      },
+
+      "dashboard": {
+        "page.tsx": {}
+      },
+
+      "peserta": {
+        "page.tsx": {},
+        "[id]": {
+          "page.tsx": {}
+        }
+      },
+
+      "pendaftar": {
+        "page.tsx": {}
+      },
+
+      "program": {
+        "page.tsx": {}
+      },
+
+      "kontrak": {
+        "page.tsx": {},
+        "[id]": {
+          "page.tsx": {}
+        }
+      }
+    }
+  },
+
+  "components": {
+    "public": {
+      "Navbar.tsx": {},
+      "Footer.tsx": {},
+      "PaketCard.tsx": {}
+    },
+
+    "admin": {
+      "Sidebar.tsx": {},
+      "Header.tsx": {},
+      "DataTable.tsx": {}
+    },
+
+    "forms": {
+      "FormPeserta.tsx": {},
+      "FormProgram.tsx": {},
+      "FormKontrak.tsx": {}
+    },
+
+    "templates": {
+      "TemplateKontrak.tsx": {}
+    }
+  },
+
+  "lib": {
+    "firebase.ts": {},
+    "auth.ts": {}
+  },
+
+  "services": {
+    "pesertaService.ts": {},
+    "programService.ts": {},
+    "kontrakService.ts": {},
+    "paketService.ts": {}
+  },
+
+  "hooks": {
+    "usePeserta.ts": {},
+    "useProgram.ts": {},
+    "useKontrak.ts": {},
+    "usePaket.ts": {}
+  },
+
+  "utils": {
+    "formatDate.ts": {},
+    "generateNomorKontrak.ts": {},
+    "slugify.ts": {}
+  },
+
+  "styles": {
+    "globals.css": {}
+  },
+
+  "public": {
+    "img": {
+      "logo.png": {},
+      "galeri": {},
+      "paket": {}
+    }
+  }
+}
