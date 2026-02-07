@@ -9,8 +9,9 @@ export default function Sidebar() {
 
   const menuItems = [
     { name: 'Dashboard', href: '/admin/dashboard' },
-    { name: 'Peserta', href: '/admin/peserta' },
     { name: 'Pendaftar', href: '/admin/pendaftar' },
+    { name: 'Peserta', href: '/admin/peserta' },
+    { name: 'KRS', href: '/admin/krs' },
     { name: 'Program', href: '/admin/program' },
     { name: 'Kontrak', href: '/admin/kontrak' },
   ];

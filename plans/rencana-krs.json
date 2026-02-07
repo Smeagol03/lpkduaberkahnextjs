@@ -1,0 +1,139 @@
+{
+  "project": {
+    "name": "Sistem Generate KRS Pelatihan LPK Dua Berkah",
+    "type": "Admin Only Feature",
+    "description": "Fitur untuk menghasilkan Kartu Rencana Studi (KRS) pelatihan secara otomatis berdasarkan data peserta dari Firebase Realtime Database tanpa menyimpan hasil generate."
+  },
+
+  "objectives": [
+    "Menghasilkan KRS pelatihan secara otomatis",
+    "Mengambil data peserta langsung dari Realtime Database",
+    "Mengurangi proses input manual oleh admin",
+    "Menyediakan preview dan export KRS tanpa penyimpanan histori"
+  ],
+
+  "system_architecture": {
+    "data_source": "Firebase Realtime Database",
+    "frontend": "Next.js Admin Panel",
+    "processing": "Generate KRS secara runtime",
+    "storage_strategy": "Tidak menyimpan hasil generate"
+  },
+
+  "data_source_structure": {
+    "path": "pendaftar",
+    "required_fields": [
+      "informasiPribadi.namaLengkap",
+      "informasiPribadi.nik",
+      "informasiPribadi.jenisKelamin",
+      "informasiPribadi.tanggalLahir",
+      "informasiPribadi.alamat",
+      "paketPelatihan",
+      "statusPeserta",
+      "tanggalDiterima"
+    ]
+  },
+
+  "feature_scope": {
+    "admin_features": [
+      "Melihat daftar peserta aktif",
+      "Generate KRS per peserta",
+      "Generate KRS per paket pelatihan",
+      "Preview KRS",
+      "Export KRS ke PDF atau Word",
+      "Cetak KRS"
+    ]
+  },
+
+  "workflow": {
+    "steps": [
+      "Admin membuka halaman KRS",
+      "Admin memilih peserta atau paket pelatihan",
+      "Sistem mengambil data peserta dari Realtime Database",
+      "Sistem melakukan mapping paket ke kurikulum pelatihan",
+      "Sistem menghasilkan KRS secara otomatis",
+      "Admin melakukan preview atau export KRS"
+    ]
+  },
+
+  "krs_structure": {
+    "identitasPeserta": [
+      "Nama Lengkap",
+      "NIK",
+      "Jenis Kelamin",
+      "Tanggal Lahir",
+      "Alamat"
+    ],
+    "informasiPelatihan": [
+      "Nama Paket Pelatihan",
+      "Daftar Materi Pelatihan",
+      "Tanggal Mulai Pelatihan",
+      "Instruktur",
+      "Durasi Pelatihan"
+    ],
+    "legalitas": [
+      "Tanggal Cetak",
+      "Tanda Tangan Penyelenggara"
+    ]
+  },
+
+  "services_design": {
+    "pesertaService": {
+      "responsibility": "Mengambil dan memfilter data peserta dari Firebase",
+      "functions": [
+        "getAllPeserta",
+        "getPesertaAktif",
+        "getPesertaByPaket"
+      ]
+    },
+    "krsService": {
+      "responsibility": "Membuat struktur KRS dari data peserta",
+      "functions": [
+        "generateKRS",
+        "mapKurikulum",
+        "formatTanggal"
+      ]
+    }
+  },
+
+  "data_processing_rules": {
+    "peserta_filter": {
+      "statusPeserta": "aktif"
+    },
+    "generate_strategy": "Generate saat diminta (on-demand)",
+    "data_storage": "Tidak menyimpan hasil generate"
+  },
+
+  "export_options": [
+    "Preview HTML",
+    "Print Browser",
+    "Export PDF",
+    "Export Word"
+  ],
+
+  "performance_considerations": [
+    "Gunakan query Firebase untuk filter paket pelatihan",
+    "Hindari mengambil seluruh data jika tidak diperlukan",
+    "Pisahkan logic generate dan pengambilan data"
+  ],
+
+  "security_considerations": [
+    "Halaman hanya dapat diakses oleh admin",
+    "Firebase rules hanya mengizinkan akses admin"
+  ],
+
+  "future_enhancements": [
+    "Template KRS dinamis",
+    "Penambahan tanda tangan digital",
+    "Penambahan nomor KRS otomatis",
+    "Export batch KRS banyak peserta",
+    "Integrasi jadwal pelatihan"
+  ],
+
+  "development_priority": [
+    "Membuat pesertaService",
+    "Membuat krsService",
+    "Membuat halaman admin generate KRS",
+    "Membuat template tampilan KRS",
+    "Menambahkan fitur export"
+  ]
+}

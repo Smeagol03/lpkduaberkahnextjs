@@ -1,0 +1,127 @@
+{
+  "fitur": "Generate KRS Peserta",
+  "deskripsi": "Membuat dokumen KRS/kontrak belajar berdasarkan data peserta dari Firebase dan template DOCX per paket",
+  "aktor": ["Admin"],
+  "prasyarat": {
+    "auth": "Admin sudah login",
+    "template": "File template tersedia di public/krs/{paket}.docx",
+    "dataFirebase": "Node peserta tersedia di path 'peserta'"
+  },
+  "sumberData": {
+    "firebase": {
+      "path": "peserta",
+      "strukturPeserta": {
+        "id": "string (key Firebase, contoh: -OdxWUq2bTnVwA_cxt2R)",
+        "informasiPribadi": {
+          "namaLengkap": "string",
+          "alamat": "string",
+          "tanggalLahir": "string (YYYY-MM-DD)"
+        },
+        "paketPelatihan": "string (contoh: paket1 | paket2 | paket3 | paket4 | paket5)",
+        "tanggalDaftar": "string (ISO Date)"
+      }
+    },
+    "templateDOCX": {
+      "lokasi": "public/krs/",
+      "penamaanFile": "{paketPelatihan}.docx",
+      "placeholder": [
+        "{{informasiPribadi.namaLengkap}}",
+        "{{informasiPribadi.alamat}}",
+        "{{informasiPribadi.tanggalLahir}}",
+        "{{paketPelatihan}}",
+        "{{tanggalDaftar}}"
+      ]
+    }
+  },
+  "alurProses": [
+    {
+      "step": 1,
+      "nama": "Admin memilih peserta",
+      "input": {
+        "idPeserta": "string"
+      },
+      "output": {
+        "idPeserta": "string"
+      }
+    },
+    {
+      "step": 2,
+      "nama": "Ambil data peserta dari Firebase",
+      "aksi": "get(ref(db, 'peserta/{idPeserta}'))",
+      "output": {
+        "peserta": {
+          "informasiPribadi": {
+            "namaLengkap": "string",
+            "alamat": "string",
+            "tanggalLahir": "string"
+          },
+          "paketPelatihan": "string",
+          "tanggalDaftar": "string"
+        }
+      },
+      "validasi": [
+        "Jika peserta tidak ditemukan → tampilkan error 'Data peserta tidak ditemukan'"
+      ]
+    },
+    {
+      "step": 3,
+      "nama": "Tentukan template berdasarkan paket",
+      "aksi": "templatePath = `/krs/${paketPelatihan}.docx`",
+      "validasi": [
+        "Jika file template tidak ada → tampilkan error 'Template paket tidak ditemukan'"
+      ]
+    },
+    {
+      "step": 4,
+      "nama": "Mapping data ke format flat untuk template",
+      "aksi": "Membuat object templateData dengan dot notation",
+      "templateData": {
+        "informasiPribadi.namaLengkap": "peserta.informasiPribadi.namaLengkap || ''",
+        "informasiPribadi.alamat": "peserta.informasiPribadi.alamat || ''",
+        "informasiPribadi.tanggalLahir": "peserta.informasiPribadi.tanggalLahir ? formatDateIndonesia(peserta.informasiPribadi.tanggalLahir) : ''",
+        "paketPelatihan": "peserta.paketPelatihan || ''",
+        "tanggalDaftar": "peserta.tanggalDaftar ? formatDateIndonesia(peserta.tanggalDaftar) : ''"
+      }
+    },
+    {
+      "step": 5,
+      "nama": "Render DOCX dengan docxtemplater",
+      "library": ["pizzip", "docxtemplater"],
+      "opsi": {
+        "paragraphLoop": true,
+        "linebreaks": true
+      },
+      "validasi": [
+        "Jika placeholder tidak cocok → tampilkan detail error Multi error"
+      ]
+    },
+    {
+      "step": 6,
+      "nama": "Generate file output",
+      "format": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "output": {
+        "fileName": "KRS-{namaLengkap}.docx",
+        "blob": "binary file"
+      }
+    },
+    {
+      "step": 7,
+      "nama": "Download file",
+      "aksi": "saveAs(blob, fileName)"
+    }
+  ],
+  "penangananError": {
+    "firebaseError": "Gagal mengambil data peserta",
+    "templateNotFound": "Template paket tidak tersedia",
+    "multiError": "Placeholder template tidak sesuai dengan struktur data",
+    "unknownError": "Terjadi kesalahan saat generate dokumen"
+  },
+  "catatanImplementasi": [
+    "Gunakan format flat (dot notation) untuk placeholder: {{informasiPribadi.namaLengkap}}",
+    "Pastikan nama file template sama dengan value paketPelatihan",
+    "Pastikan placeholder di DOCX tidak terpecah oleh format Word",
+    "Gunakan optional chaining saat mapping data untuk menghindari crash",
+    "Tambahkan error handling untuk kasus Multi error dari docxtemplater"
+  ],
+  "status": "Telah Diimplementasikan"
+}

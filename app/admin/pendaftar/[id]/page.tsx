@@ -5,14 +5,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { getPendaftarById } from '@/services/pendaftarService';
 import { useRouter } from 'next/navigation';
+import { getNestedProperty } from '@/lib/utils';
 
-// Helper function to get nested property values
-function getNestedProperty(obj: any, path: string): any {
-  if (!obj) return null;
-  return path.split('.').reduce((current, key) => {
-    return current && current[key] !== undefined ? current[key] : null;
-  }, obj);
-}
 
 export default function PendaftarDetailPage() {
   const { id } = useParams();

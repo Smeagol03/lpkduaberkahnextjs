@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { addPendaftar } from '@/services/pendaftarService';
-import Link from 'next/link';
 
 export default function DaftarPage() {
   const [formData, setFormData] = useState({
@@ -171,7 +170,7 @@ export default function DaftarPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-green-50 py-12">
+    <div className="min-h-screen bg-linear-to-b from-teal-50 to-green-50 py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
           <h1 className="text-3xl font-bold text-center text-teal-800 mb-8">Formulir Pendaftaran</h1>
@@ -444,7 +443,7 @@ export default function DaftarPage() {
                         <p className="text-sm text-gray-600">Rp. 16.000.000</p>
                       </div>
                     </label>
-                    <div className="mt-4 p-4 bg-gradient-to-r from-yellow-100 to-amber-100 border border-amber-300 rounded-lg shadow-sm">
+                    <div className="mt-4 p-4 bg-linear-to-r from-yellow-100 to-amber-100 border border-amber-300 rounded-lg shadow-sm">
                       <p className="text-sm font-semibold text-amber-800">
                         💡 Promo Spesial: Bayar penuh sekarang dan dapatkan diskon <span className="text-amber-900">13%</span>!
                       </p>
@@ -522,7 +521,7 @@ export default function DaftarPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="px-8 py-4 bg-gradient-to-r from-teal-500 to-green-500 text-white font-medium rounded-lg shadow-lg hover:from-teal-600 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-8 py-4 bg-linear-to-r from-teal-500 to-green-500 text-white font-medium rounded-lg shadow-lg hover:from-teal-600 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? (
                       <div className="flex items-center justify-center">
@@ -545,12 +544,6 @@ export default function DaftarPage() {
               </form>
             </>
           )}
-
-          <div className="mt-8 text-center">
-            <p className="text-gray-600">
-              Sudah mendaftar? <Link href="/admin/login" className="text-blue-600 font-medium hover:underline">Login sebagai peserta</Link>
-            </p>
-          </div>
         </div>
       </div>
     </div>
