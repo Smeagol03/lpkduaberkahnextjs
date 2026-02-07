@@ -62,8 +62,8 @@ export default function KontrakPage() {
     { key: 'programId' as keyof Kontrak, title: 'ID Program' },
     { key: 'tanggalMulai' as keyof Kontrak, title: 'Tanggal Mulai' },
     { key: 'tanggalSelesai' as keyof Kontrak, title: 'Tanggal Selesai' },
-    { 
-      key: 'status' as keyof Kontrak, 
+    {
+      key: 'status' as keyof Kontrak,
       title: 'Status',
       render: (value: string) => (
         <span className={`px-2 py-1 rounded-full text-xs ${
@@ -71,7 +71,7 @@ export default function KontrakPage() {
           value === 'selesai' ? 'bg-blue-100 text-blue-800' :
           'bg-red-100 text-red-800'
         }`}>
-          {value.charAt(0).toUpperCase() + value.slice(1)}
+          {value ? value.charAt(0).toUpperCase() + value.slice(1) : '-'}
         </span>
       )
     },

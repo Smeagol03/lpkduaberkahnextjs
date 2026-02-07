@@ -2,8 +2,10 @@
 
 # dependencies
 /node_modules
+/vanilaWebsite
+/app/test-firebase
+/app/api/
 /.pnp
-/.vanilaWebsite
 .pnp.*
 .yarn/*
 !.yarn/patches

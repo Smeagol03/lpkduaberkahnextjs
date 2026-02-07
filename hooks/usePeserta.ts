@@ -1,6 +1,6 @@
 // hooks/usePeserta.ts
 import { useState, useEffect } from 'react';
-import { Peserta, getPesertaList, getPesertaById, createPeserta, updatePeserta, deletePeserta } from '@/services/pesertaService';
+import { Peserta, getAllPeserta, getPesertaById, addPeserta as addPesertaService, updatePesertaById as updatePesertaByIdService, deletePesertaById as deletePesertaByIdService } from '@/services/pesertaService';
 
 export const usePeserta = () => {
   const [peserta, setPeserta] = useState<Peserta[]>([]);
@@ -10,8 +10,12 @@ export const usePeserta = () => {
   useEffect(() => {
     const fetchPeserta = async () => {
       try {
-        const data = await getPesertaList();
-        setPeserta(data);
+        const response = await getAllPeserta();
+        if (response.success) {
+          setPeserta(response.data as Peserta[] || []);
+        } else {
+          throw new Error(response.error || 'Failed to fetch peserta');
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -25,8 +29,12 @@ export const usePeserta = () => {
   const refreshPeserta = async () => {
     try {
       setLoading(true);
-      const data = await getPesertaList();
-      setPeserta(data);
+      const response = await getAllPeserta();
+      if (response.success) {
+        setPeserta(response.data as Peserta[] || []);
+      } else {
+        throw new Error(response.error || 'Failed to fetch peserta');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -36,9 +44,13 @@ export const usePeserta = () => {
 
   const addPeserta = async (newPeserta: Omit<Peserta, 'id'>) => {
     try {
-      const id = await createPeserta(newPeserta);
-      refreshPeserta(); // Refresh the list after adding
-      return id;
+      const response = await addPesertaService(newPeserta);
+      if (response.success) {
+        refreshPeserta(); // Refresh the list after adding
+        return response.data?.id;
+      } else {
+        throw new Error(response.error || 'Failed to add peserta');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -47,8 +59,12 @@ export const usePeserta = () => {
 
   const updatePesertaById = async (id: string, updatedPeserta: Partial<Peserta>) => {
     try {
-      await updatePeserta(id, updatedPeserta);
-      refreshPeserta(); // Refresh the list after updating
+      const response = await updatePesertaByIdService(id, updatedPeserta);
+      if (response.success) {
+        refreshPeserta(); // Refresh the list after updating
+      } else {
+        throw new Error(response.error || 'Failed to update peserta');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -57,8 +73,12 @@ export const usePeserta = () => {
 
   const removePeserta = async (id: string) => {
     try {
-      await deletePeserta(id);
-      refreshPeserta(); // Refresh the list after deleting
+      const response = await deletePesertaByIdService(id);
+      if (response.success) {
+        refreshPeserta(); // Refresh the list after deleting
+      } else {
+        throw new Error(response.error || 'Failed to delete peserta');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;

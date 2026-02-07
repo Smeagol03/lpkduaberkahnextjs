@@ -9,7 +9,7 @@ import GallerySection from '@/components/public/GallerySection';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-linear-to-b from-blue-50 to-white">
       <HeroSection />
       <div className="relative flex items-center py-5">
         <div className="grow border-t border-gray-400"></div> 

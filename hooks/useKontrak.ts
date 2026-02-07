@@ -1,6 +1,6 @@
 // hooks/useKontrak.ts
 import { useState, useEffect } from 'react';
-import { Kontrak, getKontrakList, getKontrakById, createKontrak, updateKontrak, deleteKontrak } from '@/services/kontrakService';
+import { Kontrak, getAllKontrak, getKontrakById, addKontrak as addKontrakService, updateKontrakById as updateKontrakByIdService, deleteKontrakById as deleteKontrakByIdService } from '@/services/kontrakService';
 
 export const useKontrak = () => {
   const [kontrak, setKontrak] = useState<Kontrak[]>([]);
@@ -10,8 +10,12 @@ export const useKontrak = () => {
   useEffect(() => {
     const fetchKontrak = async () => {
       try {
-        const data = await getKontrakList();
-        setKontrak(data);
+        const response = await getAllKontrak();
+        if (response.success) {
+          setKontrak(response.data as Kontrak[] || []);
+        } else {
+          throw new Error(response.error || 'Failed to fetch kontrak');
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -25,8 +29,12 @@ export const useKontrak = () => {
   const refreshKontrak = async () => {
     try {
       setLoading(true);
-      const data = await getKontrakList();
-      setKontrak(data);
+      const response = await getAllKontrak();
+      if (response.success) {
+        setKontrak(response.data as Kontrak[] || []);
+      } else {
+        throw new Error(response.error || 'Failed to fetch kontrak');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -36,9 +44,13 @@ export const useKontrak = () => {
 
   const addKontrak = async (newKontrak: Omit<Kontrak, 'id'>) => {
     try {
-      const id = await createKontrak(newKontrak);
-      refreshKontrak(); // Refresh the list after adding
-      return id;
+      const response = await addKontrakService(newKontrak);
+      if (response.success) {
+        refreshKontrak(); // Refresh the list after adding
+        return response.data?.id;
+      } else {
+        throw new Error(response.error || 'Failed to add kontrak');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -47,8 +59,12 @@ export const useKontrak = () => {
 
   const updateKontrakById = async (id: string, updatedKontrak: Partial<Kontrak>) => {
     try {
-      await updateKontrak(id, updatedKontrak);
-      refreshKontrak(); // Refresh the list after updating
+      const response = await updateKontrakByIdService(id, updatedKontrak);
+      if (response.success) {
+        refreshKontrak(); // Refresh the list after updating
+      } else {
+        throw new Error(response.error || 'Failed to update kontrak');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -57,8 +73,12 @@ export const useKontrak = () => {
 
   const removeKontrak = async (id: string) => {
     try {
-      await deleteKontrak(id);
-      refreshKontrak(); // Refresh the list after deleting
+      const response = await deleteKontrakByIdService(id);
+      if (response.success) {
+        refreshKontrak(); // Refresh the list after deleting
+      } else {
+        throw new Error(response.error || 'Failed to delete kontrak');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -72,6 +92,7 @@ export const useKontrak = () => {
     addKontrak,
     updateKontrakById,
     removeKontrak,
-    refreshKontrak
+    refreshKontrak,
+    getKontrakById
   };
 };

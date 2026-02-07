@@ -2,7 +2,7 @@
 import React from 'react';
 
 interface BaseColumn<T> {
-  key: keyof T;
+  key: string; // Changed to string to allow nested properties like 'informasiPribadi.namaLengkap'
   title: string;
   render?: (value: any, record: T) => React.ReactNode;
 }
@@ -21,6 +21,13 @@ interface DataTableProps<T> {
   onRowClick?: (record: T) => void;
 }
 
+// Helper function to get nested property values
+function getNestedProperty(obj: any, path: string): any {
+  return path.split('.').reduce((current, key) => {
+    return current && current[key] !== undefined ? current[key] : null;
+  }, obj);
+}
+
 export default function DataTable<T>({ columns, data, onRowClick }: DataTableProps<T>) {
   return (
     <div className="overflow-x-auto">
@@ -36,8 +43,8 @@ export default function DataTable<T>({ columns, data, onRowClick }: DataTablePro
         </thead>
         <tbody>
           {data.map((record, rowIndex) => (
-            <tr 
-              key={rowIndex} 
+            <tr
+              key={rowIndex}
               className={`bg-white border-b dark:bg-gray-800 dark:border-gray-700 ${
                 onRowClick ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700' : ''
               }`}
@@ -45,9 +52,9 @@ export default function DataTable<T>({ columns, data, onRowClick }: DataTablePro
             >
               {columns.map((column, colIndex) => (
                 <td key={colIndex} className="px-6 py-4">
-                  {'render' in column 
-                    ? column.render && column.render((record as any)[(column as any).key], record) 
-                    : (record as any)[(column as BaseColumn<T>).key]}
+                  {'render' in column
+                    ? column.render && column.render(getNestedProperty(record, column.key), record)
+                    : getNestedProperty(record, (column as BaseColumn<T>).key)}
                 </td>
               ))}
             </tr>

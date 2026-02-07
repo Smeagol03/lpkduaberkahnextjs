@@ -1,11 +1,20 @@
 // lib/auth.ts
-import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { User } from 'firebase/auth';
 import { auth } from './firebase';
+import { 
+  loginAdmin, 
+  logoutAdmin, 
+  subscribeToAuthChanges 
+} from '@/services/authService';
 
 export const loginUser = async (email: string, password: string) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
+    const result = await loginAdmin({ email, password });
+    if (result.success) {
+      return result.user;
+    } else {
+      throw new Error(result.error || 'Login failed');
+    }
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -13,12 +22,12 @@ export const loginUser = async (email: string, password: string) => {
 
 export const logoutUser = async () => {
   try {
-    await signOut(auth);
+    await logoutAdmin();
   } catch (error: any) {
     throw new Error(error.message);
   }
 };
 
 export const onAuthStateChange = (callback: (user: User | null) => void) => {
-  return onAuthStateChanged(auth, callback);
+  return subscribeToAuthChanges(callback);
 };

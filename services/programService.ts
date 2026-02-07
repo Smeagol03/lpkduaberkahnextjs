@@ -1,6 +1,16 @@
 // services/programService.ts
-import { ref, onValue, get, set, update, remove, push } from 'firebase/database';
+import {
+  ref,
+  onValue,
+  get,
+  set,
+  update,
+  remove,
+  push
+} from 'firebase/database';
 import { db } from '@/lib/firebase';
+
+console.log('[DEBUG] programService - Using centralized Firebase instance');
 
 export interface Program {
   id?: string;
@@ -9,52 +19,178 @@ export interface Program {
   durasi: string;
   harga: number;
   kuota: number;
+  fasilitas?: string[];
+  jadwal?: string;
+  instruktur?: string;
+  kategori?: string;
 }
 
-export const getProgramList = async (): Promise<Program[]> => {
-  const programRef = ref(db, 'program');
-  
-  return new Promise((resolve, reject) => {
-    onValue(programRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const programArray: Program[] = Object.keys(data).map(key => ({
+export interface ProgramResponse {
+  success: boolean;
+  data?: Program | Program[];
+  error?: string;
+}
+
+/**
+ * Get all programs
+ */
+export const getAllPrograms = async (): Promise<ProgramResponse> => {
+  try {
+    const programRef = ref(db, 'program');
+    const snapshot = await get(programRef);
+    
+    if (snapshot.exists()) {
+      const programData = snapshot.val();
+      const programArray: Program[] = [];
+      
+      Object.keys(programData).forEach(key => {
+        programArray.push({
           id: key,
-          ...data[key]
-        }));
-        resolve(programArray);
-      } else {
-        resolve([]);
-      }
-    }, (error) => {
-      reject(error);
-    });
-  });
-};
-
-export const getProgramById = async (id: string): Promise<Program | null> => {
-  const programRef = ref(db, `program/${id}`);
-  const snapshot = await get(programRef);
-  
-  if (snapshot.exists()) {
-    return { id, ...snapshot.val() };
+          ...programData[key]
+        });
+      });
+      
+      return {
+        success: true,
+        data: programArray
+      };
+    } else {
+      return {
+        success: true,
+        data: []
+      };
+    }
+  } catch (error: any) {
+    console.error('Error getting programs:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat mengambil data program'
+    };
   }
-  return null;
 };
 
-export const createProgram = async (program: Omit<Program, 'id'>): Promise<string> => {
+/**
+ * Get program by ID
+ */
+export const getProgramById = async (id: string): Promise<ProgramResponse> => {
+  try {
+    const programRef = ref(db, `program/${id}`);
+    const snapshot = await get(programRef);
+    
+    if (snapshot.exists()) {
+      return {
+        success: true,
+        data: {
+          id,
+          ...snapshot.val()
+        }
+      };
+    } else {
+      return {
+        success: false,
+        error: 'Program tidak ditemukan'
+      };
+    }
+  } catch (error: any) {
+    console.error('Error getting program by ID:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat mengambil data program'
+    };
+  }
+};
+
+/**
+ * Add new program
+ */
+export const addProgram = async (program: Omit<Program, 'id'>): Promise<ProgramResponse> => {
+  try {
+    const programRef = ref(db, 'program');
+    const newProgramRef = push(programRef);
+    
+    await set(newProgramRef, program);
+    
+    return {
+      success: true,
+      data: {
+        id: newProgramRef.key,
+        ...program
+      }
+    };
+  } catch (error: any) {
+    console.error('Error adding program:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat menambahkan program'
+    };
+  }
+};
+
+/**
+ * Update program by ID
+ */
+export const updateProgramById = async (id: string, updates: Partial<Program>): Promise<ProgramResponse> => {
+  try {
+    const programRef = ref(db, `program/${id}`);
+    await update(programRef, updates);
+    
+    return {
+      success: true,
+      data: {
+        id,
+        ...updates
+      } as Program
+    };
+  } catch (error: any) {
+    console.error('Error updating program:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat memperbarui program'
+    };
+  }
+};
+
+/**
+ * Delete program by ID
+ */
+export const deleteProgramById = async (id: string): Promise<ProgramResponse> => {
+  try {
+    const programRef = ref(db, `program/${id}`);
+    await remove(programRef);
+    
+    return {
+      success: true
+    };
+  } catch (error: any) {
+    console.error('Error deleting program:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat menghapus program'
+    };
+  }
+};
+
+/**
+ * Subscribe to program changes
+ */
+export const subscribeToProgramChanges = (callback: (programs: Program[]) => void) => {
   const programRef = ref(db, 'program');
-  const newRef = push(programRef);
-  await set(newRef, program);
-  return newRef.key || '';
-};
-
-export const updateProgram = async (id: string, program: Partial<Program>): Promise<void> => {
-  const programRef = ref(db, `program/${id}`);
-  await update(programRef, program);
-};
-
-export const deleteProgram = async (id: string): Promise<void> => {
-  const programRef = ref(db, `program/${id}`);
-  await remove(programRef);
+  
+  return onValue(programRef, (snapshot) => {
+    if (snapshot.exists()) {
+      const programData = snapshot.val();
+      const programArray: Program[] = [];
+      
+      Object.keys(programData).forEach(key => {
+        programArray.push({
+          id: key,
+          ...programData[key]
+        });
+      });
+      
+      callback(programArray);
+    } else {
+      callback([]);
+    }
+  });
 };

@@ -1,0 +1,966 @@
+{
+  "pendaftar": {
+    "-OdHJ6NzAYKGWy1PrgPp": {
+      "informasiPribadi": {
+        "alamat": "jalan jalan",
+        "jenisKelamin": "P",
+        "namaLengkap": "alissa",
+        "nik": "3271658498600045",
+        "noHP": "08128877089",
+        "tanggalLahir": "2015-06-09",
+        "tempatLahir": "bogor"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Tidak diisi",
+        "sumberInformasi": "social_media"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "D3"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-11-05T04:39:55.853Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-05T04:39:55.853Z"
+      }
+    },
+    "-OeuJz7HymVCoPpGFy21": {
+      "informasiPribadi": {
+        "alamat": "Dasan Lekong, kecamatan suka mulia lombok timur",
+        "jenisKelamin": "P",
+        "namaLengkap": "Baiq Dewinasari",
+        "nik": "5203064401020001",
+        "noHP": "087754140773",
+        "tanggalLahir": "2002-01-04",
+        "tempatLahir": "Dasan Lekong"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "mendapatkan skill menjahit",
+        "sumberInformasi": "website"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "-",
+        "pendidikanTerakhir": "S1"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-11-25T09:24:15.083Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-25T09:24:15.083Z"
+      }
+    },
+    "-OeuL3wjGR7Ye6y_DO9W": {
+      "informasiPribadi": {
+        "alamat": "Dasan lekong, Lombok Timur",
+        "jenisKelamin": "P",
+        "namaLengkap": "BAIQ DEWINASARI",
+        "nik": "5203064401020001",
+        "noHP": "087754140773",
+        "tanggalLahir": "2002-01-04",
+        "tempatLahir": "Dasan Lekong"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "menambah skill menjahit",
+        "sumberInformasi": "website"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "-",
+        "pendidikanTerakhir": "S1"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-11-25T09:29:01.040Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-25T09:29:01.040Z"
+      }
+    },
+    "-OeuS9mbvwOyq7TjEdCz": {
+      "informasiPribadi": {
+        "alamat": "DUSUN TORON DESA KERTASARI KEC.LABUHAN HAJI ,LOMBOK TIMUR",
+        "jenisKelamin": "P",
+        "namaLengkap": "PILIANTI",
+        "nik": "5203176304880001",
+        "noHP": "087748434854",
+        "tanggalLahir": "1988-03-13",
+        "tempatLahir": "DANGER"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Ingin menjadi wanita yang mandiri,mempunyai skill yang bisa dibanggakan",
+        "sumberInformasi": "other"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "IBU RUMAH TANGGA",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-11-25T10:00:02.524Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-25T10:00:02.524Z"
+      }
+    },
+    "-OewwNr0hkk7MBab6PPp": {
+      "informasiPribadi": {
+        "alamat": "Dusun Tojang Bedeng, Desa Dasan Lekong, Kecamatan Sukamulia, Kabupaten Lombok Timur",
+        "jenisKelamin": "P",
+        "namaLengkap": "DINI HARYANTI",
+        "nik": "5203064709990008",
+        "noHP": "081916484579",
+        "tanggalLahir": "1999-09-07",
+        "tempatLahir": "Selong"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Ingin bisa menjahit dengan benar dan mempelajari pola pakaian",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "S1"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-11-25T21:35:40.626Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-25T21:35:40.626Z"
+      }
+    },
+    "-OexoEE8j-FtM1HDk_yz": {
+      "informasiPribadi": {
+        "alamat": "Dusun Toron, Desa Kertasari, Kec Labuhan Haji",
+        "jenisKelamin": "P",
+        "namaLengkap": "SRI DARA HARTA",
+        "nik": "5203175207010005",
+        "noHP": "085956710014",
+        "tanggalLahir": "2001-07-12",
+        "tempatLahir": "Dusun Toron"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Ingin menjadi wanita mandiri yang memiliki skill",
+        "sumberInformasi": "other"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "S1"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-11-26T01:39:37.415Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-26T01:39:37.415Z"
+      }
+    },
+    "-Of-8L59-arKbsDxF2m2": {
+      "informasiPribadi": {
+        "alamat": "Dusun Toron, Kertasari,kec labuhan haji",
+        "jenisKelamin": "P",
+        "namaLengkap": "QURNIATUN AYUNI",
+        "nik": "5203175906050004",
+        "noHP": "083847740530",
+        "tanggalLahir": "2005-06-19",
+        "tempatLahir": "Dusun Toron"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Tidak diisi",
+        "sumberInformasi": "other"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-11-26T12:31:06.309Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-26T12:31:06.309Z"
+      }
+    },
+    "-Of34be41m1g7NnG-9Q1": {
+      "informasiPribadi": {
+        "alamat": "GUBUK PEKEN DESA DASAN LEKONG\nKEC. SUKAMULIA",
+        "jenisKelamin": "P",
+        "namaLengkap": "NURUL HASANAH",
+        "nik": "5203064107860475",
+        "noHP": "081997715208",
+        "tanggalLahir": "1986-07-01",
+        "tempatLahir": "LENGALUH"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Saya mengikuti pelatihan ini supaya bisa menjahit, membuat pola dan mengoperasikan mesin dengan benar",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-11-27T06:51:55.149Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-27T06:51:55.149Z"
+      }
+    },
+    "-Of39lFGQaQV775Woas7": {
+      "informasiPribadi": {
+        "alamat": "Gilen desa tanak kaken kecamatan sakra barat",
+        "jenisKelamin": "P",
+        "namaLengkap": "Nurlaily tsani",
+        "nik": "5203194904930001",
+        "noHP": "081917975800",
+        "tanggalLahir": "1992-01-05",
+        "tempatLahir": "Tampih"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Pengen bisa buat pola",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Ibu rumah tangga",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-11-27T07:15:48.857Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-27T07:15:48.857Z"
+      }
+    },
+    "-OfRbFUjskz63AaKUbIk": {
+      "informasiPribadi": {
+        "alamat": "Dusun toron desa kertasari kecamatan labuhan haji",
+        "jenisKelamin": "P",
+        "namaLengkap": "Dewi susilawati",
+        "nik": "5203177112060024",
+        "noHP": "083109661779",
+        "tanggalLahir": "2006-12-31",
+        "tempatLahir": "Depok rumbuk"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Tidak diisi",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2025-12-02T01:11:08.658Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-12-02T01:11:08.658Z"
+      }
+    },
+    "-OgwJ0uLn84a07zFXkSA": {
+      "address": "Deserunt consequat ",
+      "agreement": true,
+      "birthDate": "1972-01-05",
+      "birthPlace": "Do iure corrupti vo",
+      "createdAt": 1766243442700,
+      "education": "SD",
+      "fullName": "Jasmine Hunt",
+      "gender": "P",
+      "motivation": "Eu minus beatae mini",
+      "nik": "3123213213123123",
+      "occupation": "Officia illo molesti",
+      "pelatihan": "paket3",
+      "phone": "+1 (338) 494-2335",
+      "reference": "friend",
+      "status": "pending"
+    },
+    "-OiHOZtRGcFnMRrbcWa_": {
+      "informasiPribadi": {
+        "alamat": "Dusun letok desa rumbuk timur kcm Sakra kab lombok timur NTB",
+        "jenisKelamin": "P",
+        "namaLengkap": "Widiatun",
+        "nik": "5203024711060001",
+        "noHP": "081918965710",
+        "tanggalLahir": "2006-11-07",
+        "tempatLahir": "Letok"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Karna ingin bisa",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "_",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2026-01-06T08:22:16.133Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2026-01-06T08:22:16.133Z"
+      }
+    },
+    "-OifZWyOnf8cJAq2hBfz": {
+      "informasiPribadi": {
+        "alamat": "Lingkungan batu belek timur, kelurahan rakam, kec. Selong",
+        "jenisKelamin": "P",
+        "namaLengkap": "IRNAWATI",
+        "nik": "5203075407020007",
+        "noHP": "081909015868",
+        "tanggalLahir": "2002-07-14",
+        "tempatLahir": "MONTONG KLAK"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Tidak diisi",
+        "sumberInformasi": "Tidak diisi"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "S1"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2026-01-11T05:40:38.987Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2026-01-11T05:40:38.988Z"
+      }
+    },
+    "-Oj9dDJyWPnBDU9a4o-2": {
+      "informasiPribadi": {
+        "alamat": "Praida Timur. RT, 02 Desa Bagik Payung Timur, Kec.Suralaga",
+        "jenisKelamin": "P",
+        "namaLengkap": "SUPIANI",
+        "nik": "5203136807000001",
+        "noHP": "085936578004",
+        "tanggalLahir": "2000-07-28",
+        "tempatLahir": "Bagik payung"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Ingin memiliki peluang usaha dan menjadi tempat lapangan pekerjaan.",
+        "sumberInformasi": "other"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Guru",
+        "pendidikanTerakhir": "S1"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2026-01-17T06:29:22.270Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2026-01-17T06:29:22.270Z"
+      }
+    },
+    "-OjtiVSffzdarlZIpZhf": {
+      "informasiPribadi": {
+        "alamat": "Lombok Timur. Gandor, Selong \nJl.Pattimura Gang. Burnei/Peken RT.30",
+        "jenisKelamin": "P",
+        "namaLengkap": "OLGA NATASA FEBRIANTI",
+        "nik": "5203074102060006",
+        "noHP": "087711262572",
+        "tanggalLahir": "2006-01-01",
+        "tempatLahir": "Selong"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Selain saya suka dalam berkesenian seperti bermain musik serta mengambil job untuk bernyanyi, saya juga sangat ingin berketerampilan dalam menjahit, dan saya sangat suka sekali melihat desain&#039; yang unik karna ada hub an nya dgn fashion sy ketika perform, sblmnya sy sering suruh teteh sy untuk buatkan belt dll jd besar harap saya jika sudah masuk  di lpk 2 berkah ini menambah skil sy membuat desain&#039; yg sy sukai, tentunya jg di bimbing dengan sepenuh hati, sabar, dan tentunya menemukan temn&#039; yang welcome.",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "-",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2026-01-26T09:54:16.899Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2026-01-26T09:54:16.901Z"
+      }
+    },
+    "-OkcXh4Kcsq4tROxTX-5": {
+      "informasiPribadi": {
+        "alamat": "Dusun sukamulia, RT/RW 002/001 , desa kadindi, kec. Pekat, kab. Dompu",
+        "jenisKelamin": "P",
+        "namaLengkap": "Rohadatul dwita",
+        "nik": "5205066412040004",
+        "noHP": "087863554509",
+        "tanggalLahir": "2004-12-24",
+        "tempatLahir": "Kadindi"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Karna sy melihat pelatihan ini sangat menarik dan banyak kerabat dan teman yang pernah belajar di pelatihan ini dan semuanya amanah.",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket4",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "D1"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2026-02-04T12:05:11.903Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2026-02-04T12:05:11.903Z"
+      }
+    },
+    "-OkcZQ23e9y0V0F9LMOS": {
+      "informasiPribadi": {
+        "alamat": "Dusun sukamulia, RT/RW 002/001, desa kadindi, kec. Pekat, kab. Dompu",
+        "jenisKelamin": "P",
+        "namaLengkap": "Rohadatul dwita",
+        "nik": "5205066412040004",
+        "noHP": "087863554509",
+        "tanggalLahir": "2004-12-24",
+        "tempatLahir": "Kadindi"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Karna saya tertarik dengan metode pelatihan yg akan di ajarkan oleh pelatihan ini",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket4",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "D1"
+      },
+      "statusPendaftaran": "menunggu",
+      "tanggalDaftar": "2026-02-04T12:12:42.334Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2026-02-04T12:12:42.334Z"
+      }
+    }
+  },
+  "peserta": {
+    "-OdxWUq2bTnVwA_cxt2R": {
+      "informasiPribadi": {
+        "alamat": "Denggen lauq Kec. Selong Kab. Lombok Timur",
+        "jenisKelamin": "P",
+        "namaLengkap": "Baiq Nurhidayati",
+        "nik": "5203076507070006",
+        "noHP": "081943603268",
+        "tanggalLahir": "2007-07-25",
+        "tempatLahir": "Denggen Lauq"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Supaya bisa tau ilmunya",
+        "sumberInformasi": "social_media"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-13T13:58:56.173Z",
+      "tanggalDiterima": "2025-11-13T14:02:04.516Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-13T13:58:56.173Z"
+      }
+    },
+    "-OdxWbbwf9aIxnDBpjVZ": {
+      "informasiPribadi": {
+        "alamat": "Semoyong desa kidang kecamatan praya timur",
+        "jenisKelamin": "P",
+        "namaLengkap": "Nini karlina",
+        "nik": "5202065503010001",
+        "noHP": "087860954695",
+        "tanggalLahir": "2002-03-12",
+        "tempatLahir": "Semoyong"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Supaya bisa buat baju sendiri,sesuai model yg diinginkan",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T08:39:11.883Z",
+      "tanggalDiterima": "2025-11-13T14:02:36.381Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T08:39:11.883Z"
+      }
+    },
+    "-OdxWvimLBg2lu_jkud7": {
+      "informasiPribadi": {
+        "alamat": "Sekarteja, RT 02, Kel. Sekarteja, Kec. Selong, Kab. lombok Timur",
+        "jenisKelamin": "P",
+        "namaLengkap": "Siti Khyarrulya Lutfa",
+        "nik": "5203076408000004",
+        "noHP": "087757122218",
+        "tanggalLahir": "2000-08-24",
+        "tempatLahir": "Selong"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Saya tertarik dengan menjahit sejak dulu dan saya optimis, serta sadar bahwa belajar skill baru itu sangat penting, untuk itu saya ingin terjun di dunia menjahit. Namun karna merasa bingung ingin belajar mulai dari mana. Saya merasa perlu bimbingan yang matang, sehingga saya memilih mengikuti pelatihan ini.",
+        "sumberInformasi": "social_media"
+      },
+      "paketPelatihan": "paket3",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "S1"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T06:58:56.753Z",
+      "tanggalDiterima": "2025-11-13T14:03:58.734Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T06:58:56.754Z"
+      }
+    },
+    "-OdxWxig9e0CREFplkDp": {
+      "informasiPribadi": {
+        "alamat": "Desa Greneng Dusun Muntung Gadung kec.sakra timur kab.lombok timur NTB",
+        "jenisKelamin": "L",
+        "namaLengkap": "M Zaenuddin",
+        "nik": "5203182609990002",
+        "noHP": "087735355258",
+        "tanggalLahir": "1999-09-26",
+        "tempatLahir": "Muntung Gadung"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "ingin belajar menjahit jadi penjahit yang handal dan cekatan",
+        "sumberInformasi": "other"
+      },
+      "paketPelatihan": "paket3",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "penjahit rumahan",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T06:39:43.294Z",
+      "tanggalDiterima": "2025-11-13T14:04:06.920Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T06:39:43.297Z"
+      }
+    },
+    "-OdxX-0zZSU84o1qyZVv": {
+      "informasiPribadi": {
+        "alamat": "Dasar Cermen Lenting Daye kec.sakra timur kab.lombok timur NTB",
+        "jenisKelamin": "P",
+        "namaLengkap": "Maenun Komalasari",
+        "nik": "5203186805000001",
+        "noHP": "087702910457",
+        "tanggalLahir": "2000-05-28",
+        "tempatLahir": "Dasar Cermen Lenting Daye"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "ingin belajar dunia jahit, bagaimana tata cara menjahit yg bagus baik dan benar.",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket3",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T05:35:53.671Z",
+      "tanggalDiterima": "2025-11-13T14:04:16.347Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T05:35:53.674Z"
+      }
+    },
+    "-OdxX1SU9O02h4e08mOv": {
+      "informasiPribadi": {
+        "alamat": "DASAN GOGE, DUSUN SARI GOGE, DESA PRINGGABAYA, KECAMATAN PRINGGABAYA, KABUPATEN LOMBOK TIMUR, PROVINSI NTB.",
+        "jenisKelamin": "P",
+        "namaLengkap": "ANISA PUTRI",
+        "nik": "5203087101070005",
+        "noHP": "087710923249",
+        "tanggalLahir": "2007-01-31",
+        "tempatLahir": "PRINGGABAYA"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Karena mengikuti kemauan orang tua dan ingin mencoba hal baru",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T01:13:56.230Z",
+      "tanggalDiterima": "2025-11-13T14:04:26.299Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T01:13:56.231Z"
+      }
+    },
+    "-OdxX2r_7yrKSnd6wnrP": {
+      "informasiPribadi": {
+        "alamat": "Dusun Tekalok, Desa Sugian, Kecamatan Sambelia, Kabupaten Lombok Timur",
+        "jenisKelamin": "P",
+        "namaLengkap": "Mentari",
+        "nik": "5203104108070007",
+        "noHP": "081237776845",
+        "tanggalLahir": "2007-08-21",
+        "tempatLahir": "Sambelia"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Karna disuruh kakak menjadi penjahit, karna dia juga seorang penjahit",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket3",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Kursus",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T01:07:27.141Z",
+      "tanggalDiterima": "2025-11-13T14:04:32.065Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T01:07:27.141Z"
+      }
+    },
+    "-OdxX4B2ECmonu5lus4w": {
+      "informasiPribadi": {
+        "alamat": "Mtg,tengak\nSakra selatan",
+        "jenisKelamin": "P",
+        "namaLengkap": "JAMILAH",
+        "nik": "5203026709860002",
+        "noHP": "081936319583",
+        "tanggalLahir": "1986-09-27",
+        "tempatLahir": "Gerepek"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Tidak diisi",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMP"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T00:51:33.736Z",
+      "tanggalDiterima": "2025-11-13T14:04:37.471Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T00:51:33.743Z"
+      }
+    },
+    "-OdxX5LkBwaO_sEiywAi": {
+      "informasiPribadi": {
+        "alamat": "Denggen",
+        "jenisKelamin": "P",
+        "namaLengkap": "JUNIATUN",
+        "nik": "5203077006040003",
+        "noHP": "083866525570",
+        "tanggalLahir": "2004-06-30",
+        "tempatLahir": "Denggen"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Suka melihat baju yg unik² dan dukungan orang tua",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Kurus",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T00:48:22.753Z",
+      "tanggalDiterima": "2025-11-13T14:04:42.252Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T00:48:22.753Z"
+      }
+    },
+    "-OdxX8-d6SVdu4gXU0W3": {
+      "informasiPribadi": {
+        "alamat": "Dusun letok,desa rumbuk timur,kec.sakra,kab.lombok timur (NTB)",
+        "jenisKelamin": "P",
+        "namaLengkap": "Yeni Ratna Sari",
+        "nik": "5203025201070001",
+        "noHP": "083133741904",
+        "tanggalLahir": "2007-01-12",
+        "tempatLahir": "Letok"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Karana saya ingin memiliki kemampuan dibidang ini,supaya kedepannya saya bisa membuka usaha ataupun bisa menghasilkan uang dari menjahit ini",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "_",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T00:48:02.543Z",
+      "tanggalDiterima": "2025-11-13T14:04:53.125Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T00:48:02.545Z"
+      }
+    },
+    "-OdxXHKvjXBkKo1MGOes": {
+      "informasiPribadi": {
+        "alamat": "Kecego, Waringin, Suralaga, Lombok Timur",
+        "jenisKelamin": "P",
+        "namaLengkap": "Rabiatul Adawiyah",
+        "nik": "5203135508030006",
+        "noHP": "083112284189",
+        "tanggalLahir": "2003-08-13",
+        "tempatLahir": "Dasan Baru"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Tidak diisi",
+        "sumberInformasi": "Tidak diisi"
+      },
+      "paketPelatihan": "paket3",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Pelajar",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T00:25:00.091Z",
+      "tanggalDiterima": "2025-11-13T14:05:31.347Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T00:25:00.091Z"
+      }
+    },
+    "-OdxXKBdnXu-Z0vNsFeO": {
+      "informasiPribadi": {
+        "alamat": "jalan raya kerumut mudung timur anggaraksa kab.lombok kec.pringgabaya",
+        "jenisKelamin": "P",
+        "namaLengkap": "Nirmala kusuma wati",
+        "nik": "3172046604051005",
+        "noHP": "081220847927",
+        "tanggalLahir": "2005-04-26",
+        "tempatLahir": "Jakarta"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "karna ingin belajar menjahit",
+        "sumberInformasi": "website"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T00:18:18.008Z",
+      "tanggalDiterima": "2025-11-13T14:05:43.041Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T00:18:18.008Z"
+      }
+    },
+    "-OdxXM6jgc5bsUN6jkxH": {
+      "informasiPribadi": {
+        "alamat": "montong golong, sawing, kel. majidi\nkec. selong. kab lombok timur",
+        "jenisKelamin": "P",
+        "namaLengkap": "Nurwida Aryani",
+        "nik": "5203076303070005",
+        "noHP": "087856765407",
+        "tanggalLahir": "2007-03-23",
+        "tempatLahir": "montong golong"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "ingin belajar menjahit",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "pelajar",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-12T00:06:46.068Z",
+      "tanggalDiterima": "2025-11-13T14:05:50.919Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-12T00:06:46.068Z"
+      }
+    },
+    "-OdxXNBnWGKrXPxpbyF_": {
+      "informasiPribadi": {
+        "alamat": "Desa Keroya, kec aikmel",
+        "jenisKelamin": "P",
+        "namaLengkap": "Yeni Ro&#039;aeni",
+        "nik": "5203095009930003",
+        "noHP": "087766511674",
+        "tanggalLahir": "1993-09-10",
+        "tempatLahir": "Keroya"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Tidak diisi",
+        "sumberInformasi": "social_media"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMP"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-11T23:43:53.735Z",
+      "tanggalDiterima": "2025-11-13T14:05:55.339Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-11T23:43:53.735Z"
+      }
+    },
+    "-OdxXev8l7tuq3lw4bVI": {
+      "informasiPribadi": {
+        "alamat": "SAKRA MONTONG TENGAK",
+        "jenisKelamin": "P",
+        "namaLengkap": "BAIQ JUMAKIYAH",
+        "nik": "5203027112900233",
+        "noHP": "087881194110",
+        "tanggalLahir": "1990-12-31",
+        "tempatLahir": "RATEK"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Karna ingin bisa bikinin baju utk anak n bsa mnghasilkan uang",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "IRT",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-05T11:47:43.292Z",
+      "tanggalDiterima": "2025-11-13T14:07:12.032Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-05T11:47:43.292Z"
+      }
+    },
+    "-OdxXh0aZu5HYcVX9Bgn": {
+      "informasiPribadi": {
+        "alamat": "Pandan duri",
+        "jenisKelamin": "P",
+        "namaLengkap": "Paizah",
+        "nik": "5203034108060013",
+        "noHP": "087854132260",
+        "tanggalLahir": "2006-08-01",
+        "tempatLahir": "Pondok bila"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Bisa di kerjakan di rumah tanpa ad gangguan .sy suka buat baju boneka dari kecil dan penasaran cara menyambung kain pecah itu seperti ap,dengan ap dll",
+        "sumberInformasi": "friend"
+      },
+      "paketPelatihan": "paket1",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Tidak ada",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-05T06:10:08.143Z",
+      "tanggalDiterima": "2025-11-13T14:07:20.637Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-05T06:10:08.143Z"
+      }
+    },
+    "-OdxXiFvOkXVVsMwZ7q7": {
+      "informasiPribadi": {
+        "alamat": "Dusun Dames burneo Desa Dames Damai",
+        "jenisKelamin": "P",
+        "namaLengkap": "ZURRIYATUN SHOLEHAH",
+        "nik": "5203134710990001",
+        "noHP": "087788156889",
+        "tanggalLahir": "1999-10-07",
+        "tempatLahir": "Dames"
+      },
+      "motivasiReferensi": {
+        "alasanMengikuti": "Ingin paten dalam bidang jahit",
+        "sumberInformasi": "social_media"
+      },
+      "paketPelatihan": "paket2",
+      "pendidikanPekerjaan": {
+        "pekerjaanSaatIni": "Ibu rumah tangga",
+        "pendidikanTerakhir": "SMA"
+      },
+      "statusPendaftaran": "menunggu",
+      "statusPeserta": "aktif",
+      "tanggalDaftar": "2025-11-05T05:47:07.755Z",
+      "tanggalDiterima": "2025-11-13T14:07:25.714Z",
+      "validasi": {
+        "inputDivalidasi": true,
+        "waktuValidasi": "2025-11-05T05:47:07.755Z"
+      }
+    },
+    "-OgwH7PaRftGR8ygcUWw": {
+      "address": "Est ut optio sit ",
+      "agreement": true,
+      "birthDate": "2019-01-05",
+      "birthPlace": "Qui aut vitae odit a",
+      "createdAt": 1766242945132,
+      "education": "Diploma",
+      "fullName": "Xenos Aguilar",
+      "gender": "L",
+      "motivation": "Commodo quae ex id ",
+      "nik": "4234324324234342",
+      "occupation": "Magnam non labore cu",
+      "pelatihan": "paket1",
+      "phone": "+1 (723) 565-5595",
+      "reference": "social_media",
+      "status": "pending"
+    },
+    "-OgwHM1LVmWLDoenXVyy": {
+      "address": "Sunt nihil quas natu",
+      "agreement": true,
+      "birthDate": "2002-09-06",
+      "birthPlace": "Accusamus qui delect",
+      "createdAt": 1766243004977,
+      "education": "SMP",
+      "fullName": "Teagan Navarro",
+      "gender": "L",
+      "motivation": "Voluptate et dolor m",
+      "nik": "3131231231231231",
+      "occupation": "Enim est perspiciati",
+      "pelatihan": "paket1",
+      "phone": "+1 (136) 925-8454",
+      "reference": "other",
+      "status": "pending"
+    },
+    "-OgwHWVj0s96J79377Da": {
+      "address": "Ducimus dolor volup",
+      "agreement": true,
+      "birthDate": "1973-06-22",
+      "birthPlace": "Id sint perferendis",
+      "createdAt": 1766243047770,
+      "education": "Diploma",
+      "fullName": "Azalia Herrera",
+      "gender": "L",
+      "motivation": "Voluptates consequat",
+      "nik": "3434234234233333",
+      "occupation": "Ut amet quidem nost",
+      "pelatihan": "paket1",
+      "phone": "+1 (977) 217-1149",
+      "reference": "social_media",
+      "status": "pending"
+    }
+  }
+}

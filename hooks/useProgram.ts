@@ -1,6 +1,6 @@
 // hooks/useProgram.ts
 import { useState, useEffect } from 'react';
-import { Program, getProgramList, getProgramById, createProgram, updateProgram, deleteProgram } from '@/services/programService';
+import { Program, getAllPrograms, getProgramById, addProgram as addProgramService, updateProgramById as updateProgramByIdService, deleteProgramById as deleteProgramByIdService } from '@/services/programService';
 
 export const useProgram = () => {
   const [programs, setPrograms] = useState<Program[]>([]);
@@ -10,8 +10,12 @@ export const useProgram = () => {
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const data = await getProgramList();
-        setPrograms(data);
+        const response = await getAllPrograms();
+        if (response.success) {
+          setPrograms(response.data as Program[] || []);
+        } else {
+          throw new Error(response.error || 'Failed to fetch programs');
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -25,8 +29,12 @@ export const useProgram = () => {
   const refreshPrograms = async () => {
     try {
       setLoading(true);
-      const data = await getProgramList();
-      setPrograms(data);
+      const response = await getAllPrograms();
+      if (response.success) {
+        setPrograms(response.data as Program[] || []);
+      } else {
+        throw new Error(response.error || 'Failed to fetch programs');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -36,9 +44,13 @@ export const useProgram = () => {
 
   const addProgram = async (newProgram: Omit<Program, 'id'>) => {
     try {
-      const id = await createProgram(newProgram);
-      refreshPrograms(); // Refresh the list after adding
-      return id;
+      const response = await addProgramService(newProgram);
+      if (response.success) {
+        refreshPrograms(); // Refresh the list after adding
+        return response.data?.id;
+      } else {
+        throw new Error(response.error || 'Failed to add program');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -47,8 +59,12 @@ export const useProgram = () => {
 
   const updateProgramById = async (id: string, updatedProgram: Partial<Program>) => {
     try {
-      await updateProgram(id, updatedProgram);
-      refreshPrograms(); // Refresh the list after updating
+      const response = await updateProgramByIdService(id, updatedProgram);
+      if (response.success) {
+        refreshPrograms(); // Refresh the list after updating
+      } else {
+        throw new Error(response.error || 'Failed to update program');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -57,8 +73,12 @@ export const useProgram = () => {
 
   const removeProgram = async (id: string) => {
     try {
-      await deleteProgram(id);
-      refreshPrograms(); // Refresh the list after deleting
+      const response = await deleteProgramByIdService(id);
+      if (response.success) {
+        refreshPrograms(); // Refresh the list after deleting
+      } else {
+        throw new Error(response.error || 'Failed to delete program');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;

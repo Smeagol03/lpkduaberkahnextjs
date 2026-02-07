@@ -12,6 +12,8 @@ export default function PesertaPage() {
   const { peserta, loading, error, addPeserta, updatePesertaById, removePeserta } = usePeserta();
   const [showForm, setShowForm] = useState(false);
   const [editingPeserta, setEditingPeserta] = useState<any>(null);
+  const [filterStatus, setFilterStatus] = useState<string>('all'); // Filter status
+  const [filteredPeserta, setFilteredPeserta] = useState<Peserta[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -20,7 +22,14 @@ export default function PesertaPage() {
     if (!adminStatus) {
       router.push('/admin/login');
     }
-  }, [router]);
+
+    // Filter peserta berdasarkan status yang dipilih
+    if (filterStatus === 'all') {
+      setFilteredPeserta(peserta);
+    } else {
+      setFilteredPeserta(peserta.filter(p => p.statusPeserta === filterStatus));
+    }
+  }, [peserta, filterStatus, router]);
 
   const handleEdit = (record: any) => {
     setEditingPeserta(record);
@@ -56,13 +65,25 @@ export default function PesertaPage() {
     setEditingPeserta(null);
   };
 
+  const handleViewDetails = (id: string) => {
+    router.push(`/admin/peserta/${id}`);
+  };
+
   const columns = [
-    { key: 'nama' as keyof Peserta, title: 'Nama' },
-    { key: 'email' as keyof Peserta, title: 'Email' },
-    { key: 'nomorHp' as keyof Peserta, title: 'Nomor HP' },
-    { key: 'program' as keyof Peserta, title: 'Program' },
-    { 
-      key: 'status' as keyof Peserta, 
+    {
+      key: 'informasiPribadi.namaLengkap',
+      title: 'Nama'
+    },
+    {
+      key: 'informasiPribadi.noHP',
+      title: 'Nomor HP'
+    },
+    {
+      key: 'paketPelatihan',
+      title: 'Program'
+    },
+    {
+      key: 'statusPeserta',
       title: 'Status',
       render: (value: string) => (
         <span className={`px-2 py-1 rounded-full text-xs ${
@@ -71,15 +92,26 @@ export default function PesertaPage() {
           value === 'lulus' ? 'bg-blue-100 text-blue-800' :
           'bg-red-100 text-red-800'
         }`}>
-          {value.charAt(0).toUpperCase() + value.slice(1)}
+          {value ? value.charAt(0).toUpperCase() + value.slice(1) : '-'}
         </span>
       )
+    },
+    {
+      key: 'tanggalDaftar',
+      title: 'Tanggal Daftar',
+      render: (value: string) => new Date(value).toLocaleDateString('id-ID')
     },
     {
       key: 'actions',
       title: 'Aksi',
       render: (_: any, record: any) => (
         <div className="flex space-x-2">
+          <button
+            onClick={() => handleViewDetails(record.id)}
+            className="text-blue-600 hover:text-blue-900"
+          >
+            Detail
+          </button>
           <button
             onClick={() => handleEdit(record)}
             className="text-blue-600 hover:text-blue-900"
@@ -102,17 +134,36 @@ export default function PesertaPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h1 className="text-2xl font-bold">Data Peserta</h1>
-        <button
-          onClick={() => {
-            setEditingPeserta(null);
-            setShowForm(true);
-          }}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Tambah Peserta
-        </button>
+        
+        <div className="flex flex-wrap gap-2">
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="all">Semua Status</option>
+            <option value="baru">Baru</option>
+            <option value="aktif">Aktif</option>
+            <option value="lulus">Lulus</option>
+            <option value="ditolak">Ditolak</option>
+          </select>
+          
+          <button
+            onClick={() => {
+              setEditingPeserta(null);
+              setShowForm(true);
+            }}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
+          >
+            Tambah Peserta
+          </button>
+          
+          <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1.5 rounded-full flex items-center">
+            {filteredPeserta.length} peserta
+          </span>
+        </div>
       </div>
 
       {showForm ? (
@@ -131,8 +182,7 @@ export default function PesertaPage() {
       <div className="bg-white p-6 rounded-lg shadow">
         <DataTable
           columns={columns}
-          data={peserta}
-          onRowClick={handleEdit}
+          data={filteredPeserta}
         />
       </div>
     </div>

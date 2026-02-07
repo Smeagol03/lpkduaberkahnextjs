@@ -12,6 +12,8 @@ export default function ProgramPage() {
   const { programs, loading, error, addProgram, updateProgramById, removeProgram } = useProgram();
   const [showForm, setShowForm] = useState(false);
   const [editingProgram, setEditingProgram] = useState<any>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredPrograms, setFilteredPrograms] = useState<Program[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -20,7 +22,18 @@ export default function ProgramPage() {
     if (!adminStatus) {
       router.push('/admin/login');
     }
-  }, [router]);
+
+    // Filter program berdasarkan pencarian
+    if (searchTerm) {
+      const filtered = programs.filter(program => 
+        program.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        program.deskripsi.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPrograms(filtered);
+    } else {
+      setFilteredPrograms(programs);
+    }
+  }, [programs, searchTerm, router]);
 
   const handleEdit = (record: any) => {
     setEditingProgram(record);
@@ -56,12 +69,18 @@ export default function ProgramPage() {
     setEditingProgram(null);
   };
 
+  const handleViewDetails = (id: string) => {
+    // Untuk sementara, kita arahkan ke edit karena belum ada halaman detail program
+    setEditingProgram(programs.find(p => p.id === id));
+    setShowForm(true);
+  };
+
   const columns = [
     { key: 'nama' as keyof Program, title: 'Nama Program' },
     { key: 'deskripsi' as keyof Program, title: 'Deskripsi' },
     { key: 'durasi' as keyof Program, title: 'Durasi' },
-    { 
-      key: 'harga' as keyof Program, 
+    {
+      key: 'harga' as keyof Program,
       title: 'Harga',
       render: (value: number) => `Rp ${value.toLocaleString('id-ID')}`
     },
@@ -71,6 +90,12 @@ export default function ProgramPage() {
       title: 'Aksi',
       render: (_: any, record: any) => (
         <div className="flex space-x-2">
+          <button
+            onClick={() => handleViewDetails(record.id)}
+            className="text-blue-600 hover:text-blue-900"
+          >
+            Detail
+          </button>
           <button
             onClick={() => handleEdit(record)}
             className="text-blue-600 hover:text-blue-900"
@@ -93,17 +118,32 @@ export default function ProgramPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h1 className="text-2xl font-bold">Data Program</h1>
-        <button
-          onClick={() => {
-            setEditingProgram(null);
-            setShowForm(true);
-          }}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Tambah Program
-        </button>
+        
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+          <input
+            type="text"
+            placeholder="Cari program..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
+          />
+          
+          <button
+            onClick={() => {
+              setEditingProgram(null);
+              setShowForm(true);
+            }}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
+          >
+            Tambah Program
+          </button>
+          
+          <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1.5 rounded-full flex items-center">
+            {filteredPrograms.length} program
+          </span>
+        </div>
       </div>
 
       {showForm ? (
@@ -122,8 +162,7 @@ export default function ProgramPage() {
       <div className="bg-white p-6 rounded-lg shadow">
         <DataTable
           columns={columns}
-          data={programs}
-          onRowClick={handleEdit}
+          data={filteredPrograms}
         />
       </div>
     </div>

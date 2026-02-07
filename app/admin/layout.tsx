@@ -1,6 +1,6 @@
 // app/admin/layout.tsx
 import Sidebar from '@/components/admin/Sidebar';
-import Header from '@/components/admin/Header';
+import AdminNavbar from '@/components/admin/AdminNavbar';
 
 export default function AdminLayout({
   children,
@@ -11,7 +11,7 @@ export default function AdminLayout({
     <div className="min-h-screen flex">
       <Sidebar />
       <div className="flex-1 ml-64">
-        <Header />
+        <AdminNavbar />
         <main className="p-4">
           {children}
         </main>
