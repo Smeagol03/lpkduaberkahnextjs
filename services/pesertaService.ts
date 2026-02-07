@@ -12,8 +12,9 @@ import {
   equalTo
 } from 'firebase/database';
 import { db } from '@/lib/firebase';
+import { logger } from '@/lib/logger';
 
-console.log('[DEBUG] pesertaService - Using centralized Firebase instance');
+logger.debug('pesertaService - Using centralized Firebase instance');
 
 export interface InformasiPribadi {
   namaLengkap: string;
@@ -64,38 +65,38 @@ export interface PesertaResponse {
  */
 export const getAllPeserta = async (): Promise<PesertaResponse> => {
   try {
-    console.log('[DEBUG] getAllPeserta - Fetching all peserta');
+    logger.debug('getAllPeserta - Fetching all peserta');
     const pesertaRef = ref(db, 'peserta');
     const snapshot = await get(pesertaRef);
-    
-    console.log('[DEBUG] getAllPeserta - Snapshot exists:', snapshot.exists());
-    
+
+    logger.debug('getAllPeserta - Snapshot exists:', snapshot.exists());
+
     if (snapshot.exists()) {
       const pesertaData = snapshot.val();
       const pesertaArray: Peserta[] = [];
-      
-      console.log('[DEBUG] getAllPeserta - Number of peserta:', Object.keys(pesertaData).length);
-      
+
+      logger.debug('getAllPeserta - Number of peserta:', Object.keys(pesertaData).length);
+
       Object.keys(pesertaData).forEach(key => {
         pesertaArray.push({
           id: key,
           ...pesertaData[key]
         });
       });
-      
+
       return {
         success: true,
         data: pesertaArray
       };
     } else {
-      console.log('[DEBUG] getAllPeserta - No peserta found');
+      logger.debug('getAllPeserta - No peserta found');
       return {
         success: true,
         data: []
       };
     }
   } catch (error: any) {
-    console.error('[DEBUG] getAllPeserta - Error:', error);
+    logger.error('getAllPeserta - Error:', error);
     console.error('Error getting peserta:', error);
     return {
       success: false,
@@ -109,16 +110,16 @@ export const getAllPeserta = async (): Promise<PesertaResponse> => {
  */
 export const getPesertaById = async (id: string): Promise<PesertaResponse> => {
   try {
-    console.log('[DEBUG] getPesertaById - Fetching peserta with ID:', id);
+    logger.debug('getPesertaById - Fetching peserta with ID:', id);
     const pesertaRef = ref(db, `peserta/${id}`);
     const snapshot = await get(pesertaRef);
-    
-    console.log('[DEBUG] getPesertaById - Snapshot exists:', snapshot.exists());
-    
+
+    logger.debug('getPesertaById - Snapshot exists:', snapshot.exists());
+
     if (snapshot.exists()) {
       const pesertaData = snapshot.val();
-      console.log('[DEBUG] getPesertaById - Raw data from Firebase:', JSON.stringify(pesertaData, null, 2));
-      
+      logger.debug('getPesertaById - Raw data from Firebase:', JSON.stringify(pesertaData, null, 2));
+
       const result = {
         success: true,
         data: {
@@ -126,18 +127,18 @@ export const getPesertaById = async (id: string): Promise<PesertaResponse> => {
           ...pesertaData
         }
       };
-      
-      console.log('[DEBUG] getPesertaById - Returning data:', JSON.stringify(result.data, null, 2));
+
+      logger.debug('getPesertaById - Returning data:', JSON.stringify(result.data, null, 2));
       return result;
     } else {
-      console.log('[DEBUG] getPesertaById - Peserta not found');
+      logger.debug('getPesertaById - Peserta not found');
       return {
         success: false,
         error: 'Peserta tidak ditemukan'
       };
     }
   } catch (error: any) {
-    console.error('[DEBUG] getPesertaById - Error:', error);
+    logger.error('getPesertaById - Error:', error);
     console.error('Error getting peserta by ID:', error);
     return {
       success: false,
@@ -151,28 +152,28 @@ export const getPesertaById = async (id: string): Promise<PesertaResponse> => {
  */
 export const addPeserta = async (peserta: Omit<Peserta, 'id'>): Promise<PesertaResponse> => {
   try {
-    console.log('[DEBUG] addPeserta - Starting to add peserta');
+    logger.debug('addPeserta - Starting to add peserta');
     const pesertaRef = ref(db, 'peserta');
     const newPesertaRef = push(pesertaRef);
-    
-    console.log('[DEBUG] addPeserta - New peserta ref key:', newPesertaRef.key);
-    
+
+    logger.debug('addPeserta - New peserta ref key:', newPesertaRef.key);
+
     if (!newPesertaRef.key) {
       throw new Error('Failed to generate peserta ID');
     }
-    
+
     const pesertaWithDate = {
       ...peserta,
       tanggalDaftar: new Date().toISOString(),
       statusPeserta: 'aktif' as const, // Default status for new participants
     };
-    
-    console.log('[DEBUG] addPeserta - Peserta data to save:', JSON.stringify(pesertaWithDate, null, 2));
-    
+
+    logger.debug('addPeserta - Peserta data to save:', JSON.stringify(pesertaWithDate, null, 2));
+
     await set(newPesertaRef, pesertaWithDate);
-    
-    console.log('[DEBUG] addPeserta - Peserta saved successfully');
-    
+
+    logger.debug('addPeserta - Peserta saved successfully');
+
     return {
       success: true,
       data: {
@@ -181,7 +182,7 @@ export const addPeserta = async (peserta: Omit<Peserta, 'id'>): Promise<PesertaR
       } as Peserta
     };
   } catch (error: any) {
-    console.error('[DEBUG] addPeserta - Error:', error);
+    logger.error('addPeserta - Error:', error);
     console.error('Error adding peserta:', error);
     return {
       success: false,
@@ -195,19 +196,19 @@ export const addPeserta = async (peserta: Omit<Peserta, 'id'>): Promise<PesertaR
  */
 export const updatePesertaById = async (id: string, updates: Partial<Peserta>): Promise<PesertaResponse> => {
   try {
-    console.log('[DEBUG] updatePesertaById - Updating peserta ID:', id);
-    console.log('[DEBUG] updatePesertaById - Updates:', JSON.stringify(updates, null, 2));
-    
+    logger.debug('updatePesertaById - Updating peserta ID:', id);
+    logger.debug('updatePesertaById - Updates:', JSON.stringify(updates, null, 2));
+
     const pesertaRef = ref(db, `peserta/${id}`);
     await update(pesertaRef, updates);
-    
-    console.log('[DEBUG] updatePesertaById - Update successful');
-    
+
+    logger.debug('updatePesertaById - Update successful');
+
     // Fetch the complete updated data
     const snapshot = await get(pesertaRef);
-    
+
     if (snapshot.exists()) {
-      console.log('[DEBUG] updatePesertaById - Fetched updated data');
+      logger.debug('updatePesertaById - Fetched updated data');
       return {
         success: true,
         data: {
@@ -216,7 +217,7 @@ export const updatePesertaById = async (id: string, updates: Partial<Peserta>): 
         }
       };
     } else {
-      console.log('[DEBUG] updatePesertaById - Warning: Data not found after update');
+      logger.debug('updatePesertaById - Warning: Data not found after update');
       return {
         success: true,
         data: {
@@ -226,7 +227,7 @@ export const updatePesertaById = async (id: string, updates: Partial<Peserta>): 
       };
     }
   } catch (error: any) {
-    console.error('[DEBUG] updatePesertaById - Error:', error);
+    logger.error('updatePesertaById - Error:', error);
     console.error('Error updating peserta:', error);
     return {
       success: false,
@@ -242,7 +243,7 @@ export const deletePesertaById = async (id: string): Promise<PesertaResponse> =>
   try {
     const pesertaRef = ref(db, `peserta/${id}`);
     await remove(pesertaRef);
-    
+
     return {
       success: true
     };
@@ -262,18 +263,18 @@ export const getPesertaByStatus = async (status: string): Promise<PesertaRespons
   try {
     const pesertaRef = query(ref(db, 'peserta'), orderByChild('statusPeserta'), equalTo(status));
     const snapshot = await get(pesertaRef);
-    
+
     if (snapshot.exists()) {
       const pesertaData = snapshot.val();
       const pesertaArray: Peserta[] = [];
-      
+
       Object.keys(pesertaData).forEach(key => {
         pesertaArray.push({
           id: key,
           ...pesertaData[key]
         });
       });
-      
+
       return {
         success: true,
         data: pesertaArray

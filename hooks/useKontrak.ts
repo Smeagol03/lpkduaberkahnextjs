@@ -45,9 +45,11 @@ export const useKontrak = () => {
   const addKontrak = async (newKontrak: Omit<Kontrak, 'id'>) => {
     try {
       const response = await addKontrakService(newKontrak);
-      if (response.success) {
+      if (response.success && response.data) {
         refreshKontrak(); // Refresh the list after adding
-        return response.data?.id;
+        // Since addKontrakService returns a single Kontrak, cast if needed
+        const kontrakData = Array.isArray(response.data) ? response.data[0] : response.data;
+        return kontrakData?.id;
       } else {
         throw new Error(response.error || 'Failed to add kontrak');
       }

@@ -4,7 +4,7 @@
 /node_modules
 /vanilaWebsite
 /app/test-firebase
-/app/api/
+/plans
 /.pnp
 .pnp.*
 .yarn/*

@@ -45,9 +45,11 @@ export const usePendaftar = () => {
   const addPendaftar = async (newPendaftar: Omit<Pendaftar, 'id'>) => {
     try {
       const response = await addPendaftarService(newPendaftar);
-      if (response.success) {
+      if (response.success && response.data) {
         refreshPendaftar(); // Refresh the list after adding
-        return response.data?.id;
+        // Since addPendaftarService returns a single Pendaftar, cast if needed
+        const pendaftarData = Array.isArray(response.data) ? response.data[0] : response.data;
+        return pendaftarData?.id;
       } else {
         throw new Error(response.error || 'Failed to add pendaftar');
       }

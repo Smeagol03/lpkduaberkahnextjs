@@ -1,10 +1,10 @@
 // lib/auth.ts
 import { User } from 'firebase/auth';
 import { auth } from './firebase';
-import { 
-  loginAdmin, 
-  logoutAdmin, 
-  subscribeToAuthChanges 
+import {
+  loginAdmin,
+  logoutAdmin,
+  subscribeToAuthChanges
 } from '@/services/authService';
 
 export const loginUser = async (email: string, password: string) => {

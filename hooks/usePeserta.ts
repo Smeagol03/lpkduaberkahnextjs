@@ -45,9 +45,11 @@ export const usePeserta = () => {
   const addPeserta = async (newPeserta: Omit<Peserta, 'id'>) => {
     try {
       const response = await addPesertaService(newPeserta);
-      if (response.success) {
+      if (response.success && response.data) {
         refreshPeserta(); // Refresh the list after adding
-        return response.data?.id;
+        // Since addPesertaService returns a single Peserta, cast if needed
+        const pesertaData = Array.isArray(response.data) ? response.data[0] : response.data;
+        return pesertaData?.id;
       } else {
         throw new Error(response.error || 'Failed to add peserta');
       }

@@ -9,8 +9,9 @@ import {
   push
 } from 'firebase/database';
 import { db } from '@/lib/firebase';
+import { logger } from '@/lib/logger';
 
-console.log('[DEBUG] kontrakService - Using centralized Firebase instance');
+logger.debug('kontrakService - Using centralized Firebase instance');
 
 export interface Kontrak {
   id?: string;
@@ -38,18 +39,18 @@ export const getAllKontrak = async (): Promise<KontrakResponse> => {
   try {
     const kontrakRef = ref(db, 'kontrak');
     const snapshot = await get(kontrakRef);
-    
+
     if (snapshot.exists()) {
       const kontrakData = snapshot.val();
       const kontrakArray: Kontrak[] = [];
-      
+
       Object.keys(kontrakData).forEach(key => {
         kontrakArray.push({
           id: key,
           ...kontrakData[key]
         });
       });
-      
+
       return {
         success: true,
         data: kontrakArray
@@ -76,7 +77,7 @@ export const getKontrakById = async (id: string): Promise<KontrakResponse> => {
   try {
     const kontrakRef = ref(db, `kontrak/${id}`);
     const snapshot = await get(kontrakRef);
-    
+
     if (snapshot.exists()) {
       return {
         success: true,
@@ -107,15 +108,15 @@ export const addKontrak = async (kontrak: Omit<Kontrak, 'id'>): Promise<KontrakR
   try {
     const kontrakRef = ref(db, 'kontrak');
     const newKontrakRef = push(kontrakRef);
-    
+
     // Generate nomor kontrak otomatis jika belum disediakan
     const kontrakWithNumber = {
       ...kontrak,
       nomorKontrak: kontrak.nomorKontrak || `KTR-${Date.now()}`
     };
-    
+
     await set(newKontrakRef, kontrakWithNumber);
-    
+
     return {
       success: true,
       data: {
@@ -139,7 +140,7 @@ export const updateKontrakById = async (id: string, updates: Partial<Kontrak>): 
   try {
     const kontrakRef = ref(db, `kontrak/${id}`);
     await update(kontrakRef, updates);
-    
+
     return {
       success: true,
       data: {
@@ -163,7 +164,7 @@ export const deleteKontrakById = async (id: string): Promise<KontrakResponse> =>
   try {
     const kontrakRef = ref(db, `kontrak/${id}`);
     await remove(kontrakRef);
-    
+
     return {
       success: true
     };
@@ -181,19 +182,19 @@ export const deleteKontrakById = async (id: string): Promise<KontrakResponse> =>
  */
 export const subscribeToKontrakChanges = (callback: (kontrak: Kontrak[]) => void) => {
   const kontrakRef = ref(db, 'kontrak');
-  
+
   return onValue(kontrakRef, (snapshot) => {
     if (snapshot.exists()) {
       const kontrakData = snapshot.val();
       const kontrakArray: Kontrak[] = [];
-      
+
       Object.keys(kontrakData).forEach(key => {
         kontrakArray.push({
           id: key,
           ...kontrakData[key]
         });
       });
-      
+
       callback(kontrakArray);
     } else {
       callback([]);

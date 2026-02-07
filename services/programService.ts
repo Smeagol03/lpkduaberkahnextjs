@@ -9,9 +9,9 @@ import {
   push
 } from 'firebase/database';
 import { db } from '@/lib/firebase';
-import { ReactNode } from 'react';
+import { logger } from '@/lib/logger';
 
-console.log('[DEBUG] programService - Using centralized Firebase instance');
+logger.debug('programService - Using centralized Firebase instance');
 
 // Define the graduate (lulusan) data structure - same as participant but with lulus status
 export interface InformasiPribadi {

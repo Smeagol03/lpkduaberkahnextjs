@@ -2,6 +2,7 @@
 import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
+import { logger } from '@/lib/logger';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAx0MtM4P-TRSltbW1lZd_QRQRSQL46zHw",
@@ -15,9 +16,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-console.log('[DEBUG] lib/firebase - Checking existing Firebase apps:', getApps().length);
+logger.debug('lib/firebase - Checking existing Firebase apps:', getApps().length);
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-console.log('[DEBUG] lib/firebase - Firebase app initialized:', app.name);
+logger.debug('lib/firebase - Firebase app initialized:', app.name);
 
 // Export services
 export const db = getDatabase(app);

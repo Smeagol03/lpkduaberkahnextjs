@@ -3,7 +3,7 @@
 /**
  * Helper function to get nested property values
  */
-export function getNestedProperty(obj: any, path: string): any {
+export function getNestedProperty(obj: Record<string, any>, path: string): any {
   if (!obj) return null;
   return path.split('.').reduce((current, key) => {
     return current && current[key] !== undefined ? current[key] : null;
@@ -50,7 +50,7 @@ export function isAdmin(): boolean {
 /**
  * Redirect to login if not admin
  */
-export function redirectToLogin(router: any) {
+export function redirectToLogin(router: { push: (path: string) => void }) {
   if (typeof window !== 'undefined') {
     router.push('/admin/login');
   }

@@ -20,7 +20,7 @@ export default function LoginPage() {
     try {
       // Gunakan fungsi loginAdmin dari authService
       const result = await loginAdmin({ email, password });
-      
+
       if (result.success) {
         // Simpan status admin di localStorage
         localStorage.setItem('admin', 'true');

@@ -31,20 +31,22 @@ export default function KontrakDetailPage() {
       try {
         if (typeof id === 'string') {
           const data = await getKontrakById(id);
-          if (data && data.success) {
-            setKontrak(data.data);
-            
+          if (data && data.success && data.data) {
+            // Since we're fetching by ID, cast to single Kontrak object
+            const kontrakData = Array.isArray(data.data) ? data.data[0] : data.data;
+            setKontrak(kontrakData);
+
             // Ambil data peserta dan program terkait
-            if (data.data.pesertaId) {
-              const pesertaData = await getPesertaById(data.data.pesertaId);
-              if (pesertaData && pesertaData.success) {
+            if (kontrakData.pesertaId) {
+              const pesertaData = await getPesertaById(kontrakData.pesertaId);
+              if (pesertaData && pesertaData.success && pesertaData.data) {
                 setPeserta(pesertaData.data);
               }
             }
-            
-            if (data.data.programId) {
-              const programData = await getProgramById(data.data.programId);
-              if (programData && programData.success) {
+
+            if (kontrakData.programId) {
+              const programData = await getProgramById(kontrakData.programId);
+              if (programData && programData.success && programData.data) {
                 setProgram(programData.data);
               }
             }

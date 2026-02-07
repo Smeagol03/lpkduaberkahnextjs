@@ -13,17 +13,18 @@ export async function debugPesertaData(pesertaId: string) {
     if (result.success && result.data) {
       console.log('Participant data retrieved successfully:');
       console.log(JSON.stringify(result.data, null, 2));
-      
+
       // Check specific fields that might have mismatched values
-      const participant = result.data;
-      
+      // Since getPesertaById returns a single Peserta, cast if needed
+      const participant = Array.isArray(result.data) ? result.data[0] : result.data;
+
       console.log('\n--- Field Value Analysis ---');
       console.log(`jenisKelamin: "${participant.informasiPribadi?.jenisKelamin}"`);
       console.log(`pendidikanTerakhir: "${participant.pendidikanPekerjaan?.pendidikanTerakhir}"`);
       console.log(`sumberInformasi: "${participant.motivasiReferensi?.sumberInformasi}"`);
       console.log(`statusPendaftaran: "${participant.statusPendaftaran}"`);
       console.log(`statusPeserta: "${participant.statusPeserta}"`);
-      
+
       console.log('\n--- Expected Values ---');
       console.log('jenisKelamin: "Laki-laki" or "Perempuan"');
       console.log('pendidikanTerakhir: "SD", "SMP", "SMA/SMK", "Diploma", "Sarjana", "Magister", "Doktor"');

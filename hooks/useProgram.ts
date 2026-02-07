@@ -1,6 +1,6 @@
 // hooks/useProgram.ts
 import { useState, useEffect } from 'react';
-import { Graduate, getAllGraduates, getGraduateById, addGraduate as addGraduateService, updateGraduateById as updateGraduateByIdService, deleteGraduateById as deleteGraduateByIdService } from '@/services/programService';
+import { Graduate, getAllGraduates, addGraduate as addGraduateService, updateGraduateById as updateGraduateByIdService, deleteGraduateById as deleteGraduateByIdService } from '@/services/programService';
 
 export const useProgram = () => {
   const [programs, setPrograms] = useState<Graduate[]>([]); // Renamed but keeping the same variable name for consistency
@@ -45,9 +45,11 @@ export const useProgram = () => {
   const addProgram = async (newProgram: Omit<Graduate, 'id'>) => {
     try {
       const response = await addGraduateService(newProgram);
-      if (response.success) {
+      if (response.success && response.data) {
         refreshPrograms(); // Refresh the list after adding
-        return response.data?.id;
+        // Since addGraduateService returns a single Graduate, cast if needed
+        const graduateData = Array.isArray(response.data) ? response.data[0] : response.data;
+        return graduateData?.id;
       } else {
         throw new Error(response.error || 'Failed to add graduate');
       }

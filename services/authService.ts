@@ -6,8 +6,9 @@ import {
   User
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { logger } from '@/lib/logger';
 
-console.log('[DEBUG] authService - Using centralized Firebase instance');
+logger.debug('authService - Using centralized Firebase instance');
 
 export interface AdminCredentials {
   email: string;
@@ -25,15 +26,15 @@ export interface AuthResponse {
  */
 export const loginAdmin = async ({ email, password }: AdminCredentials): Promise<AuthResponse> => {
   try {
-    console.log('[DEBUG] loginAdmin - Attempting login for:', email);
+    logger.debug('loginAdmin - Attempting login for:', email);
     const result = await signInWithEmailAndPassword(auth, email, password);
-    console.log('[DEBUG] loginAdmin - Login successful for user:', result.user.email);
+    logger.debug('loginAdmin - Login successful for user:', result.user.email);
     return {
       success: true,
       user: result.user
     };
   } catch (error: any) {
-    console.error('[DEBUG] loginAdmin - Error:', error);
+    logger.error('loginAdmin - Error:', error);
     console.error('Login error:', error);
     return {
       success: false,
@@ -47,11 +48,11 @@ export const loginAdmin = async ({ email, password }: AdminCredentials): Promise
  */
 export const logoutAdmin = async (): Promise<void> => {
   try {
-    console.log('[DEBUG] logoutAdmin - Attempting logout');
+    logger.debug('logoutAdmin - Attempting logout');
     await signOut(auth);
-    console.log('[DEBUG] logoutAdmin - Logout successful');
+    logger.debug('logoutAdmin - Logout successful');
   } catch (error: any) {
-    console.error('[DEBUG] logoutAdmin - Error:', error);
+    logger.error('logoutAdmin - Error:', error);
     console.error('Logout error:', error);
     throw new Error(error.message || 'Terjadi kesalahan saat logout');
   }

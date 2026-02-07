@@ -12,8 +12,9 @@ import {
   equalTo
 } from 'firebase/database';
 import { db } from '@/lib/firebase';
+import { logger } from '@/lib/logger';
 
-console.log('[DEBUG] pendaftarService - Using centralized Firebase instance');
+logger.debug('pendaftarService - Using centralized Firebase instance');
 
 export interface InformasiPribadi {
   namaLengkap: string;
@@ -64,18 +65,18 @@ export const getAllPendaftar = async (): Promise<PendaftarResponse> => {
   try {
     const pendaftarRef = ref(db, 'pendaftar');
     const snapshot = await get(pendaftarRef);
-    
+
     if (snapshot.exists()) {
       const pendaftarData = snapshot.val();
       const pendaftarArray: Pendaftar[] = [];
-      
+
       Object.keys(pendaftarData).forEach(key => {
         pendaftarArray.push({
           id: key,
           ...pendaftarData[key]
         });
       });
-      
+
       return {
         success: true,
         data: pendaftarArray
@@ -102,7 +103,7 @@ export const getPendaftarById = async (id: string): Promise<PendaftarResponse> =
   try {
     const pendaftarRef = ref(db, `pendaftar/${id}`);
     const snapshot = await get(pendaftarRef);
-    
+
     if (snapshot.exists()) {
       return {
         success: true,
@@ -133,15 +134,15 @@ export const addPendaftar = async (pendaftar: Omit<Pendaftar, 'id'>): Promise<Pe
   try {
     const pendaftarRef = ref(db, 'pendaftar');
     const newPendaftarRef = push(pendaftarRef);
-    
+
     const pendaftarWithDate = {
       ...pendaftar,
       tanggalDaftar: new Date().toISOString(),
       statusPendaftaran: 'menunggu' as const // Default status for new registrants
     };
-    
+
     await set(newPendaftarRef, pendaftarWithDate);
-    
+
     return {
       success: true,
       data: {
@@ -165,7 +166,7 @@ export const updatePendaftarById = async (id: string, updates: Partial<Pendaftar
   try {
     const pendaftarRef = ref(db, `pendaftar/${id}`);
     await update(pendaftarRef, updates);
-    
+
     return {
       success: true,
       data: {
@@ -189,7 +190,7 @@ export const deletePendaftarById = async (id: string): Promise<PendaftarResponse
   try {
     const pendaftarRef = ref(db, `pendaftar/${id}`);
     await remove(pendaftarRef);
-    
+
     return {
       success: true
     };
@@ -208,18 +209,18 @@ export const deletePendaftarById = async (id: string): Promise<PendaftarResponse
 export const approvePendaftar = async (id: string): Promise<PendaftarResponse> => {
   try {
     const pendaftarRef = ref(db, `pendaftar/${id}`);
-    await update(pendaftarRef, { 
+    await update(pendaftarRef, {
       statusPendaftaran: 'disetujui',
       ['tanggalDiterima']: new Date().toISOString()
     });
-    
+
     // Also add to peserta collection
     const snapshot = await get(pendaftarRef);
     if (snapshot.exists()) {
       const pendaftarData = snapshot.val();
       const pesertaRef = ref(db, 'peserta');
       const newPesertaRef = push(pesertaRef);
-      
+
       await set(newPesertaRef, {
         ...pendaftarData,
         id: newPesertaRef.key,
@@ -227,7 +228,7 @@ export const approvePendaftar = async (id: string): Promise<PendaftarResponse> =
         tanggalDiterima: new Date().toISOString()
       });
     }
-    
+
     return {
       success: true,
       data: {
@@ -251,7 +252,7 @@ export const rejectPendaftar = async (id: string): Promise<PendaftarResponse> =>
   try {
     const pendaftarRef = ref(db, `pendaftar/${id}`);
     await update(pendaftarRef, { statusPendaftaran: 'ditolak' });
-    
+
     return {
       success: true,
       data: {
@@ -275,18 +276,18 @@ export const getPendaftarByStatus = async (status: string): Promise<PendaftarRes
   try {
     const pendaftarRef = query(ref(db, 'pendaftar'), orderByChild('statusPendaftaran'), equalTo(status));
     const snapshot = await get(pendaftarRef);
-    
+
     if (snapshot.exists()) {
       const pendaftarData = snapshot.val();
       const pendaftarArray: Pendaftar[] = [];
-      
+
       Object.keys(pendaftarData).forEach(key => {
         pendaftarArray.push({
           id: key,
           ...pendaftarData[key]
         });
       });
-      
+
       return {
         success: true,
         data: pendaftarArray
@@ -311,19 +312,19 @@ export const getPendaftarByStatus = async (status: string): Promise<PendaftarRes
  */
 export const subscribeToPendaftarChanges = (callback: (pendaftar: Pendaftar[]) => void) => {
   const pendaftarRef = ref(db, 'pendaftar');
-  
+
   return onValue(pendaftarRef, (snapshot) => {
     if (snapshot.exists()) {
       const pendaftarData = snapshot.val();
       const pendaftarArray: Pendaftar[] = [];
-      
+
       Object.keys(pendaftarData).forEach(key => {
         pendaftarArray.push({
           id: key,
           ...pendaftarData[key]
         });
       });
-      
+
       callback(pendaftarArray);
     } else {
       callback([]);
