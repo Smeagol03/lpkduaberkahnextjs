@@ -21,11 +21,16 @@ export default function PendaftarPage() {
     }
 
     // Filter pendaftar berdasarkan status yang dipilih
-    if (filterStatus === 'all') {
-      setFilteredPendaftar(pendaftar);
-    } else {
-      setFilteredPendaftar(pendaftar.filter(p => p.statusPendaftaran === filterStatus));
-    }
+    let filtered = filterStatus === 'all' ? pendaftar : pendaftar.filter(p => p.statusPendaftaran === filterStatus);
+    
+    // Urutkan berdasarkan tanggal daftar dari terbaru ke terlama
+    filtered.sort((a, b) => {
+      const dateA = a.tanggalDaftar ? new Date(a.tanggalDaftar).getTime() : 0;
+      const dateB = b.tanggalDaftar ? new Date(b.tanggalDaftar).getTime() : 0;
+      return dateB - dateA; // Urutan descending (terbaru ke terlama)
+    });
+    
+    setFilteredPendaftar(filtered);
   }, [pendaftar, filterStatus, router]);
 
   const handleApprove = async (id: string) => {

@@ -24,11 +24,16 @@ export default function PesertaPage() {
     }
 
     // Filter peserta berdasarkan status yang dipilih
-    if (filterStatus === 'all') {
-      setFilteredPeserta(peserta);
-    } else {
-      setFilteredPeserta(peserta.filter(p => p.statusPeserta === filterStatus));
-    }
+    let filtered = filterStatus === 'all' ? peserta : peserta.filter(p => p.statusPeserta === filterStatus);
+    
+    // Urutkan berdasarkan tanggal daftar dari terbaru ke terlama
+    filtered.sort((a, b) => {
+      const dateA = a.tanggalDaftar ? new Date(a.tanggalDaftar).getTime() : 0;
+      const dateB = b.tanggalDaftar ? new Date(b.tanggalDaftar).getTime() : 0;
+      return dateB - dateA; // Urutan descending (terbaru ke terlama)
+    });
+    
+    setFilteredPeserta(filtered);
   }, [peserta, filterStatus, router]);
 
   const handleEdit = (record: any) => {

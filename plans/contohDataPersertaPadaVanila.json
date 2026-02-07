@@ -1,0 +1,26 @@
+{
+  "informasiPribadi": {
+    "alamat": "jalan jalan",
+    "jenisKelamin": "P",
+    "namaLengkap": "alissa",
+    "nik": "3271658498600045",
+    "noHP": "08128877089",
+    "tanggalLahir": "2015-06-09",
+    "tempatLahir": "bogor"
+  },
+  "motivasiReferensi": {
+    "alasanMengikuti": "Tidak diisi",
+    "sumberInformasi": "social_media"
+  },
+  "paketPelatihan": "paket1",
+  "pendidikanPekerjaan": {
+    "pekerjaanSaatIni": "Tidak ada",
+    "pendidikanTerakhir": "D3"
+  },
+  "statusPendaftaran": "menunggu",
+  "tanggalDaftar": "2025-11-05T04:39:55.853Z",
+  "validasi": {
+    "inputDivalidasi": true,
+    "waktuValidasi": "2025-11-05T04:39:55.853Z"
+  }
+}

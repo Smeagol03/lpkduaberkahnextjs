@@ -9,9 +9,224 @@ import {
   push
 } from 'firebase/database';
 import { db } from '@/lib/firebase';
+import { ReactNode } from 'react';
 
 console.log('[DEBUG] programService - Using centralized Firebase instance');
 
+// Define the graduate (lulusan) data structure - same as participant but with lulus status
+export interface InformasiPribadi {
+  namaLengkap: string;
+  nik: string;
+  noHP: string;
+  alamat: string;
+  jenisKelamin: string;
+  tempatLahir: string;
+  tanggalLahir: string;
+}
+
+export interface PendidikanPekerjaan {
+  pendidikanTerakhir: string;
+  pekerjaanSaatIni: string;
+}
+
+export interface MotivasiReferensi {
+  alasanMengikuti: string;
+  sumberInformasi: string;
+}
+
+export interface Validasi {
+  inputDivalidasi: boolean;
+  waktuValidasi: string;
+}
+
+export interface Graduate {
+  id?: string;
+  informasiPribadi: InformasiPribadi;
+  pendidikanPekerjaan: PendidikanPekerjaan;
+  motivasiReferensi: MotivasiReferensi;
+  paketPelatihan: string;
+  statusPendaftaran?: 'menunggu' | 'disetujui' | 'ditolak';
+  statusPeserta: 'baru' | 'aktif' | 'lulus' | 'ditolak';
+  tanggalDaftar: string;
+  tanggalDiterima?: string;
+  tanggalLulus?: string;
+  validasi: Validasi;
+}
+
+export interface GraduateResponse {
+  success: boolean;
+  data?: Graduate | Graduate[];
+  error?: string;
+}
+
+/**
+ * Get all graduates (lulusan)
+ */
+export const getAllGraduates = async (): Promise<GraduateResponse> => {
+  try {
+    const graduateRef = ref(db, 'program');
+    const snapshot = await get(graduateRef);
+
+    if (snapshot.exists()) {
+      const graduateData = snapshot.val();
+      const graduateArray: Graduate[] = [];
+
+      Object.keys(graduateData).forEach(key => {
+        const graduate = {
+          id: key,
+          ...graduateData[key]
+        };
+        // Ensure the Firebase key is always used as the ID, not any id field in the data
+        graduate.id = key;
+        graduateArray.push(graduate);
+      });
+
+      return {
+        success: true,
+        data: graduateArray
+      };
+    } else {
+      return {
+        success: true,
+        data: []
+      };
+    }
+  } catch (error: any) {
+    console.error('Error getting graduates:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat mengambil data lulusan'
+    };
+  }
+};
+
+/**
+ * Get graduate by ID
+ */
+export const getGraduateById = async (id: string): Promise<GraduateResponse> => {
+  try {
+    const graduateRef = ref(db, `program/${id}`);
+    const snapshot = await get(graduateRef);
+
+    if (snapshot.exists()) {
+      return {
+        success: true,
+        data: {
+          id,
+          ...snapshot.val()
+        }
+      };
+    } else {
+      return {
+        success: false,
+        error: 'Data lulusan tidak ditemukan'
+      };
+    }
+  } catch (error: any) {
+    console.error('Error getting graduate by ID:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat mengambil data lulusan'
+    };
+  }
+};
+
+/**
+ * Add new graduate
+ */
+export const addGraduate = async (graduate: Omit<Graduate, 'id'>): Promise<GraduateResponse> => {
+  try {
+    const graduateRef = ref(db, 'program');
+    const newGraduateRef = push(graduateRef);
+
+    await set(newGraduateRef, graduate);
+
+    return {
+      success: true,
+      data: {
+        id: newGraduateRef.key,
+        ...graduate
+      }
+    };
+  } catch (error: any) {
+    console.error('Error adding graduate:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat menambahkan data lulusan'
+    };
+  }
+};
+
+/**
+ * Update graduate by ID
+ */
+export const updateGraduateById = async (id: string, updates: Partial<Graduate>): Promise<GraduateResponse> => {
+  try {
+    const graduateRef = ref(db, `program/${id}`);
+    await update(graduateRef, updates);
+
+    return {
+      success: true,
+      data: {
+        id,
+        ...updates
+      } as Graduate
+    };
+  } catch (error: any) {
+    console.error('Error updating graduate:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat memperbarui data lulusan'
+    };
+  }
+};
+
+/**
+ * Delete graduate by ID
+ */
+export const deleteGraduateById = async (id: string): Promise<GraduateResponse> => {
+  try {
+    const graduateRef = ref(db, `program/${id}`);
+    await remove(graduateRef);
+
+    return {
+      success: true
+    };
+  } catch (error: any) {
+    console.error('Error deleting graduate:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat menghapus data lulusan'
+    };
+  }
+};
+
+/**
+ * Subscribe to graduate changes
+ */
+export const subscribeToGraduateChanges = (callback: (graduates: Graduate[]) => void) => {
+  const graduateRef = ref(db, 'program');
+
+  return onValue(graduateRef, (snapshot) => {
+    if (snapshot.exists()) {
+      const graduateData = snapshot.val();
+      const graduateArray: Graduate[] = [];
+
+      Object.keys(graduateData).forEach(key => {
+        graduateArray.push({
+          id: key,
+          ...graduateData[key]
+        });
+      });
+
+      callback(graduateArray);
+    } else {
+      callback([]);
+    }
+  });
+};
+
+// Export the old interface and functions for backward compatibility
 export interface Program {
   id?: string;
   nama: string;
@@ -31,166 +246,10 @@ export interface ProgramResponse {
   error?: string;
 }
 
-/**
- * Get all programs
- */
-export const getAllPrograms = async (): Promise<ProgramResponse> => {
-  try {
-    const programRef = ref(db, 'program');
-    const snapshot = await get(programRef);
-    
-    if (snapshot.exists()) {
-      const programData = snapshot.val();
-      const programArray: Program[] = [];
-      
-      Object.keys(programData).forEach(key => {
-        programArray.push({
-          id: key,
-          ...programData[key]
-        });
-      });
-      
-      return {
-        success: true,
-        data: programArray
-      };
-    } else {
-      return {
-        success: true,
-        data: []
-      };
-    }
-  } catch (error: any) {
-    console.error('Error getting programs:', error);
-    return {
-      success: false,
-      error: error.message || 'Terjadi kesalahan saat mengambil data program'
-    };
-  }
-};
-
-/**
- * Get program by ID
- */
-export const getProgramById = async (id: string): Promise<ProgramResponse> => {
-  try {
-    const programRef = ref(db, `program/${id}`);
-    const snapshot = await get(programRef);
-    
-    if (snapshot.exists()) {
-      return {
-        success: true,
-        data: {
-          id,
-          ...snapshot.val()
-        }
-      };
-    } else {
-      return {
-        success: false,
-        error: 'Program tidak ditemukan'
-      };
-    }
-  } catch (error: any) {
-    console.error('Error getting program by ID:', error);
-    return {
-      success: false,
-      error: error.message || 'Terjadi kesalahan saat mengambil data program'
-    };
-  }
-};
-
-/**
- * Add new program
- */
-export const addProgram = async (program: Omit<Program, 'id'>): Promise<ProgramResponse> => {
-  try {
-    const programRef = ref(db, 'program');
-    const newProgramRef = push(programRef);
-    
-    await set(newProgramRef, program);
-    
-    return {
-      success: true,
-      data: {
-        id: newProgramRef.key,
-        ...program
-      }
-    };
-  } catch (error: any) {
-    console.error('Error adding program:', error);
-    return {
-      success: false,
-      error: error.message || 'Terjadi kesalahan saat menambahkan program'
-    };
-  }
-};
-
-/**
- * Update program by ID
- */
-export const updateProgramById = async (id: string, updates: Partial<Program>): Promise<ProgramResponse> => {
-  try {
-    const programRef = ref(db, `program/${id}`);
-    await update(programRef, updates);
-    
-    return {
-      success: true,
-      data: {
-        id,
-        ...updates
-      } as Program
-    };
-  } catch (error: any) {
-    console.error('Error updating program:', error);
-    return {
-      success: false,
-      error: error.message || 'Terjadi kesalahan saat memperbarui program'
-    };
-  }
-};
-
-/**
- * Delete program by ID
- */
-export const deleteProgramById = async (id: string): Promise<ProgramResponse> => {
-  try {
-    const programRef = ref(db, `program/${id}`);
-    await remove(programRef);
-    
-    return {
-      success: true
-    };
-  } catch (error: any) {
-    console.error('Error deleting program:', error);
-    return {
-      success: false,
-      error: error.message || 'Terjadi kesalahan saat menghapus program'
-    };
-  }
-};
-
-/**
- * Subscribe to program changes
- */
-export const subscribeToProgramChanges = (callback: (programs: Program[]) => void) => {
-  const programRef = ref(db, 'program');
-  
-  return onValue(programRef, (snapshot) => {
-    if (snapshot.exists()) {
-      const programData = snapshot.val();
-      const programArray: Program[] = [];
-      
-      Object.keys(programData).forEach(key => {
-        programArray.push({
-          id: key,
-          ...programData[key]
-        });
-      });
-      
-      callback(programArray);
-    } else {
-      callback([]);
-    }
-  });
-};
+// Aliases for backward compatibility
+export const getAllPrograms = getAllGraduates;
+export const getProgramById = getGraduateById;
+export const addProgram = addGraduate;
+export const updateProgramById = updateGraduateById;
+export const deleteProgramById = deleteGraduateById;
+export const subscribeToProgramChanges = subscribeToGraduateChanges;

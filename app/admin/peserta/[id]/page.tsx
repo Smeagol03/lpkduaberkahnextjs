@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { getPesertaById } from '@/services/pesertaService';
+import { getPesertaById, movePesertaToProgram } from '@/services/pesertaService';
 import { useRouter } from 'next/navigation';
 
 // Helper function to get nested property values
@@ -20,6 +20,7 @@ export default function PesertaDetailPage() {
   const [peserta, setPeserta] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [graduationLoading, setGraduationLoading] = useState(false);
 
   useEffect(() => {
     // Cek apakah pengguna sudah login sebagai admin
@@ -47,6 +48,29 @@ export default function PesertaDetailPage() {
 
     fetchPeserta();
   }, [id, router]);
+
+  const handleGraduate = async () => {
+    if (!confirm('Apakah Anda yakin ingin meluluskan peserta ini dan memindahkannya ke data program?')) {
+      return;
+    }
+
+    setGraduationLoading(true);
+    setError('');
+
+    try {
+      const result = await movePesertaToProgram(id as string);
+      if (result.success) {
+        alert('Peserta berhasil diluluskan dan dipindahkan ke data program!');
+        router.push('/admin/peserta'); // Navigate back to the peserta list
+      } else {
+        setError(result.error || 'Gagal meluluskan peserta');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Terjadi kesalahan saat meluluskan peserta');
+    } finally {
+      setGraduationLoading(false);
+    }
+  };
 
   if (loading) return <div className="text-center py-8">Memuat data peserta...</div>;
   if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
@@ -174,12 +198,27 @@ export default function PesertaDetailPage() {
 
       <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">Aksi</h2>
-        <div className="flex space-x-4">
+        <div className="flex flex-wrap gap-4">
           <button
             onClick={() => router.push(`/admin/peserta/${id}/edit`)}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Edit
+          </button>
+          <button
+            onClick={handleGraduate}
+            disabled={graduationLoading || peserta.statusPeserta === 'lulus'}
+            className={`${
+              peserta.statusPeserta === 'lulus' 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'bg-green-500 hover:bg-green-700'
+            } text-white font-bold py-2 px-4 rounded`}
+          >
+            {graduationLoading 
+              ? 'Memproses...' 
+              : peserta.statusPeserta === 'lulus' 
+                ? 'Sudah Lulus' 
+                : 'Lulus'}
           </button>
           <button
             onClick={() => {

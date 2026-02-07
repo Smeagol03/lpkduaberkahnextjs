@@ -210,14 +210,15 @@ export default function DashboardPage() {
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Program Terpopuler</h2>
           <div className="space-y-4">
-            {programs.slice(0, 5).map((program, index) => (
-              <div key={program.id} className="flex items-center justify-between">
+            <p className="text-gray-500">Fitur ini menampilkan data lulusan terbaru karena sistem belum memiliki data program pelatihan.</p>
+            {programs.slice(0, 5).map((graduate, index) => (
+              <div key={graduate.id} className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium">{program.nama}</p>
-                  <p className="text-sm text-gray-500">{program.deskripsi.substring(0, 50)}...</p>
+                  <p className="font-medium">{graduate.informasiPribadi?.namaLengkap || 'Nama tidak dikenal'}</p>
+                  <p className="text-sm text-gray-500">{graduate.paketPelatihan || 'Paket pelatihan tidak dikenal'}</p>
                 </div>
                 <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                  {program.kuota} kuota
+                  {graduate.statusPeserta || 'Status N/A'}
                 </span>
               </div>
             ))}

@@ -294,23 +294,74 @@ export const getPesertaByStatus = async (status: string): Promise<PesertaRespons
 };
 
 /**
+ * Move peserta to program (graduate them)
+ */
+export const movePesertaToProgram = async (id: string): Promise<PesertaResponse> => {
+  try {
+    // Get the peserta data
+    const pesertaRef = ref(db, `peserta/${id}`);
+    const snapshot = await get(pesertaRef);
+
+    if (!snapshot.exists()) {
+      return {
+        success: false,
+        error: 'Peserta tidak ditemukan'
+      };
+    }
+
+    const pesertaData = snapshot.val();
+
+    // Update the status to 'lulus' and add graduation date
+    const updatedPesertaData = {
+      ...pesertaData,
+      statusPeserta: 'lulus' as const,
+      tanggalLulus: new Date().toISOString()
+    };
+
+    // Create a reference to the program database
+    const programRef = ref(db, 'program');
+    const newProgramRef = push(programRef);
+
+    // Save to program database
+    await set(newProgramRef, updatedPesertaData);
+
+    // Remove from peserta database after successfully adding to program
+    await remove(pesertaRef);
+
+    return {
+      success: true,
+      data: {
+        id: newProgramRef.key,
+        ...updatedPesertaData
+      } as Peserta
+    };
+  } catch (error: any) {
+    console.error('Error moving peserta to program:', error);
+    return {
+      success: false,
+      error: error.message || 'Terjadi kesalahan saat memindahkan peserta ke program'
+    };
+  }
+};
+
+/**
  * Subscribe to peserta changes
  */
 export const subscribeToPesertaChanges = (callback: (peserta: Peserta[]) => void) => {
   const pesertaRef = ref(db, 'peserta');
-  
+
   return onValue(pesertaRef, (snapshot) => {
     if (snapshot.exists()) {
       const pesertaData = snapshot.val();
       const pesertaArray: Peserta[] = [];
-      
+
       Object.keys(pesertaData).forEach(key => {
         pesertaArray.push({
           id: key,
           ...pesertaData[key]
         });
       });
-      
+
       callback(pesertaArray);
     } else {
       callback([]);

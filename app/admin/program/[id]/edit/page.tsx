@@ -1,14 +1,14 @@
-// app/admin/peserta/[id]/edit/page.tsx
+// app/admin/program/[id]/edit/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { getPesertaById, updatePesertaById } from '@/services/pesertaService';
+import { getGraduateById, updateGraduateById } from '@/services/programService';
 
-export default function EditPesertaPage() {
+export default function EditProgramPage() {
   const { id } = useParams();
   const router = useRouter();
-  
+
   const [formData, setFormData] = useState({
     informasiPribadi: {
       namaLengkap: '',
@@ -28,16 +28,16 @@ export default function EditPesertaPage() {
       sumberInformasi: '',
     },
     paketPelatihan: '',
-    statusPendaftaran: 'menunggu' as 'menunggu' | 'disetujui' | 'ditolak',
-    statusPeserta: 'baru' as 'baru' | 'aktif' | 'lulus' | 'ditolak',
+    statusPeserta: 'lulus' as 'baru' | 'aktif' | 'lulus' | 'ditolak',
     tanggalDaftar: '',
     tanggalDiterima: '',
+    tanggalLulus: '',
     validasi: {
       inputDivalidasi: false,
       waktuValidasi: ''
     }
   });
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -49,16 +49,15 @@ export default function EditPesertaPage() {
       router.push('/admin/login');
     }
 
-    const fetchPeserta = async () => {
+    const fetchProgram = async () => {
       try {
-        console.log('[DEBUG] EditPesertaPage - Fetching peserta with ID:', id);
-        if (typeof id === 'string') {
-          const data = await getPesertaById(id);
-          console.log('[DEBUG] EditPesertaPage - Response:', data);
-          
+        // Handle both string and array forms of id from useParams
+        const graduateId = Array.isArray(id) ? id[0] : id;
+        
+        if (typeof graduateId === 'string' && graduateId) {
+          const data = await getGraduateById(graduateId);
+
           if (data && data.success && data.data) {
-            console.log('[DEBUG] EditPesertaPage - Peserta data:', JSON.stringify(data.data, null, 2));
-            
             // Properly merge nested objects
             setFormData(prev => ({
               ...prev,
@@ -80,27 +79,25 @@ export default function EditPesertaPage() {
                 ...(data.data as any).validasi
               }
             }));
-            
-            console.log('[DEBUG] EditPesertaPage - Form data after merge:', JSON.stringify(formData, null, 2));
           } else {
-            console.error('[DEBUG] EditPesertaPage - Error:', data.error);
-            setError(data.error || 'Peserta tidak ditemukan');
+            setError(data.error || 'Graduate data not found');
           }
+        } else {
+          setError('Invalid ID provided');
         }
       } catch (err: any) {
-        console.error('[DEBUG] EditPesertaPage - Exception:', err);
-        setError(err.message || 'Terjadi kesalahan saat mengambil data peserta');
+        setError(err.message || 'Terjadi kesalahan saat mengambil data lulusan');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPeserta();
+    fetchProgram();
   }, [id, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    
+
     // Handle nested properties using dot notation
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
@@ -123,31 +120,36 @@ export default function EditPesertaPage() {
     e.preventDefault();
     setError('');
     setSuccess('');
-    
+
     try {
-      if (typeof id === 'string') {
-        // Extract only the fields we want to update, excluding system-generated fields
+      // Handle both string and array forms of id from useParams
+      const graduateId = Array.isArray(id) ? id[0] : id;
+      
+      if (typeof graduateId === 'string' && graduateId) {
+        // Extract only the fields we want to update, excluding helper fields
         const { tanggalDaftar, ...updateData } = formData;
-        const result = await updatePesertaById(id, updateData);
+        const result = await updateGraduateById(graduateId, updateData);
         if (result.success) {
-          setSuccess('Data peserta berhasil diperbarui!');
+          setSuccess('Data lulusan berhasil diperbarui!');
           setTimeout(() => {
-            router.push(`/admin/peserta/${id}`);
+            router.push(`/admin/program/${graduateId}`);
           }, 1500);
         } else {
-          setError(result.error || 'Gagal memperbarui data peserta');
+          setError(result.error || 'Gagal memperbarui data lulusan');
         }
+      } else {
+        setError('Invalid ID provided');
       }
     } catch (err: any) {
-      setError(err.message || 'Terjadi kesalahan saat memperbarui data peserta');
+      setError(err.message || 'Terjadi kesalahan saat memperbarui data lulusan');
     }
   };
 
-  if (loading) return <div className="text-center py-8">Memuat data peserta...</div>;
+  if (loading) return <div className="text-center py-8">Memuat data lulusan...</div>;
   if (error && !loading) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
+    <div className="max-w-6xl mx-auto p-4 overflow-auto">
       <div className="mb-6">
         <button
           onClick={() => router.back()}
@@ -157,11 +159,11 @@ export default function EditPesertaPage() {
         </button>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6">Edit Peserta</h1>
-      
+      <h1 className="text-2xl font-bold mb-6">Edit Lulusan</h1>
+
       {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
       {success && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">{success}</div>}
-      
+
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow">
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Informasi Pribadi</h2>
@@ -177,10 +179,10 @@ export default function EditPesertaPage() {
                 value={formData.informasiPribadi.namaLengkap}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
+                required
               />
             </div>
-            
+
             <div>
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="informasiPribadi.nik">
                 NIK *
@@ -192,7 +194,7 @@ export default function EditPesertaPage() {
                 value={formData.informasiPribadi.nik}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
+                required
               />
             </div>
 
@@ -207,7 +209,7 @@ export default function EditPesertaPage() {
                 value={formData.informasiPribadi.noHP}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
+                required
               />
             </div>
 
@@ -221,7 +223,7 @@ export default function EditPesertaPage() {
                 value={formData.informasiPribadi.alamat}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
+                required
               />
             </div>
 
@@ -254,7 +256,7 @@ export default function EditPesertaPage() {
                 value={formData.informasiPribadi.tempatLahir}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
+                required
               />
             </div>
 
@@ -269,7 +271,7 @@ export default function EditPesertaPage() {
                 value={formData.informasiPribadi.tanggalLahir}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
+                required
               />
             </div>
           </div>
@@ -332,7 +334,7 @@ export default function EditPesertaPage() {
                 value={formData.motivasiReferensi.alasanMengikuti}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
+                required
               />
             </div>
 
@@ -346,7 +348,7 @@ export default function EditPesertaPage() {
                 value={formData.motivasiReferensi.sumberInformasi}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-
+                required
               >
                 <option value="">Pilih Sumber Informasi</option>
                 <option value="social_media">Media Sosial</option>
@@ -384,24 +386,6 @@ export default function EditPesertaPage() {
             </div>
 
             <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="statusPendaftaran">
-                Status Pendaftaran *
-              </label>
-              <select
-                id="statusPendaftaran"
-                name="statusPendaftaran"
-                value={formData.statusPendaftaran}
-                onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
-              >
-                <option value="menunggu">Menunggu</option>
-                <option value="disetujui">Disetujui</option>
-                <option value="ditolak">Ditolak</option>
-              </select>
-            </div>
-
-            <div>
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="statusPeserta">
                 Status Peserta *
               </label>
@@ -411,7 +395,7 @@ export default function EditPesertaPage() {
                 value={formData.statusPeserta}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-
+                required
               >
                 <option value="baru">Baru</option>
                 <option value="aktif">Aktif</option>
@@ -419,7 +403,7 @@ export default function EditPesertaPage() {
                 <option value="ditolak">Ditolak</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="tanggalDiterima">
                 Tanggal Diterima
@@ -429,6 +413,20 @@ export default function EditPesertaPage() {
                 id="tanggalDiterima"
                 name="tanggalDiterima"
                 value={formData.tanggalDiterima}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="tanggalLulus">
+                Tanggal Lulus
+              </label>
+              <input
+                type="date"
+                id="tanggalLulus"
+                name="tanggalLulus"
+                value={formData.tanggalLulus}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />

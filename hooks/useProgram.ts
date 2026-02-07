@@ -1,20 +1,20 @@
 // hooks/useProgram.ts
 import { useState, useEffect } from 'react';
-import { Program, getAllPrograms, getProgramById, addProgram as addProgramService, updateProgramById as updateProgramByIdService, deleteProgramById as deleteProgramByIdService } from '@/services/programService';
+import { Graduate, getAllGraduates, getGraduateById, addGraduate as addGraduateService, updateGraduateById as updateGraduateByIdService, deleteGraduateById as deleteGraduateByIdService } from '@/services/programService';
 
 export const useProgram = () => {
-  const [programs, setPrograms] = useState<Program[]>([]);
+  const [programs, setPrograms] = useState<Graduate[]>([]); // Renamed but keeping the same variable name for consistency
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const response = await getAllPrograms();
+        const response = await getAllGraduates();
         if (response.success) {
-          setPrograms(response.data as Program[] || []);
+          setPrograms(response.data as Graduate[] || []);
         } else {
-          throw new Error(response.error || 'Failed to fetch programs');
+          throw new Error(response.error || 'Failed to fetch graduates');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
@@ -29,11 +29,11 @@ export const useProgram = () => {
   const refreshPrograms = async () => {
     try {
       setLoading(true);
-      const response = await getAllPrograms();
+      const response = await getAllGraduates();
       if (response.success) {
-        setPrograms(response.data as Program[] || []);
+        setPrograms(response.data as Graduate[] || []);
       } else {
-        throw new Error(response.error || 'Failed to fetch programs');
+        throw new Error(response.error || 'Failed to fetch graduates');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -42,14 +42,14 @@ export const useProgram = () => {
     }
   };
 
-  const addProgram = async (newProgram: Omit<Program, 'id'>) => {
+  const addProgram = async (newProgram: Omit<Graduate, 'id'>) => {
     try {
-      const response = await addProgramService(newProgram);
+      const response = await addGraduateService(newProgram);
       if (response.success) {
         refreshPrograms(); // Refresh the list after adding
         return response.data?.id;
       } else {
-        throw new Error(response.error || 'Failed to add program');
+        throw new Error(response.error || 'Failed to add graduate');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -57,13 +57,13 @@ export const useProgram = () => {
     }
   };
 
-  const updateProgramById = async (id: string, updatedProgram: Partial<Program>) => {
+  const updateProgramById = async (id: string, updatedProgram: Partial<Graduate>) => {
     try {
-      const response = await updateProgramByIdService(id, updatedProgram);
+      const response = await updateGraduateByIdService(id, updatedProgram);
       if (response.success) {
         refreshPrograms(); // Refresh the list after updating
       } else {
-        throw new Error(response.error || 'Failed to update program');
+        throw new Error(response.error || 'Failed to update graduate');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -73,11 +73,11 @@ export const useProgram = () => {
 
   const removeProgram = async (id: string) => {
     try {
-      const response = await deleteProgramByIdService(id);
+      const response = await deleteGraduateByIdService(id);
       if (response.success) {
         refreshPrograms(); // Refresh the list after deleting
       } else {
-        throw new Error(response.error || 'Failed to delete program');
+        throw new Error(response.error || 'Failed to delete graduate');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
