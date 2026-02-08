@@ -1,9 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/.opencode
 /node_modules
 /vanilaWebsite
 /app/test-firebase
+/app/test-api/
 /plans
 /.pnp
 .pnp.*

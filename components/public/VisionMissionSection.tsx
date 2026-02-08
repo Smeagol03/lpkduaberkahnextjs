@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,27 +23,27 @@ const itemVariants = {
 };
 
 const visionCardVariants = {
-  hidden: { x: -50, opacity: 0 },
+  hidden: { y: -50, opacity: 0 },
   visible: {
-    x: 0,
+    y: 0,
     opacity: 1,
     transition: { duration: 0.7, ease: "easeOut" as const },
   },
 };
 
 const missionCardVariants = {
-  hidden: { x: 50, opacity: 0 },
+  hidden: { y: 50, opacity: 0 },
   visible: {
-    x: 0,
+    y: 0,
     opacity: 1,
     transition: { duration: 0.7, ease: "easeOut" as const, delay: 0.2 },
   },
 };
 
 const missionItemVariants = {
-  hidden: { x: -20, opacity: 0 },
+  hidden: { y: -20, opacity: 0 },
   visible: {
-    x: 0,
+    y: 0,
     opacity: 1,
     transition: { duration: 0.4, ease: "easeOut" as const },
   },

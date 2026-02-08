@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -63,8 +63,7 @@ export default function Footer() {
   const contactInfo = {
     address: "Dusun Lendang Bedurik, Kelurahan Sekarteja, Kabupaten Lombok Timur",
     phone: "+62 877-1739-8311",
-    email: "info@lpkduaberkah.com",
-    hours: "Senin - Jumat: 08.00 - 17.00",
+    email: "harlinlpkb@gmail.com",
   };
 
   return (
@@ -239,15 +238,7 @@ export default function Footer() {
                   {contactInfo.email}
                 </a>
               </motion.p>
-              <motion.p
-                className="text-blue-200 pt-2 border-t border-blue-800"
-                variants={linkItemVariants}
-              >
-                <span className="block text-xs text-blue-400 mb-1">
-                  Jam Operasional:
-                </span>
-                {contactInfo.hours}
-              </motion.p>
+
             </address>
           </motion.div>
         </div>

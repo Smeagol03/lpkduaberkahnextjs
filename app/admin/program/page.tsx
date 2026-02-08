@@ -15,7 +15,7 @@ export default function ProgramPage() {
 
   useEffect(() => {
     // Cek apakah pengguna sudah login sebagai admin
-    const adminStatus = localStorage.getItem('admin');
+    const adminStatus = localStorage.getItem('adminUser');
     if (!adminStatus) {
       router.push('/admin/login');
     }

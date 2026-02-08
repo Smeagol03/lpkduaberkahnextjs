@@ -17,9 +17,13 @@ export default function DashboardPage() {
 
   useEffect(() => {
     // Cek apakah pengguna sudah login sebagai admin
-    const adminStatus = localStorage.getItem('admin');
-    if (!adminStatus) {
-      router.push('/admin/login');
+    const adminData = localStorage.getItem('adminUser');
+    if (!adminData) {
+      // Delay kecil untuk menghindari race condition dengan login page
+      const timer = setTimeout(() => {
+        router.push('/admin/login');
+      }, 100);
+      return () => clearTimeout(timer);
     } else {
       setIsAdmin(true);
     }
@@ -28,7 +32,7 @@ export default function DashboardPage() {
     const unsubscribe = onAuthStateChange((user) => {
       if (!user) {
         // Jika pengguna tidak lagi login, hapus status admin dan redirect ke login
-        localStorage.removeItem('admin');
+        localStorage.removeItem('adminUser');
         router.push('/admin/login');
       } else {
         setIsAdmin(true);
