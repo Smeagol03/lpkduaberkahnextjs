@@ -39,6 +39,12 @@ const paketData: Record<string, { image: string; title: string; description: str
   },
 };
 
+export function generateStaticParams() {
+  return Object.keys(paketData).map((slug) => ({
+    slug,
+  }));
+}
+
 export async function generateMetadata(
   { params }: { params: Promise<Params> }
 ): Promise<Metadata> {
