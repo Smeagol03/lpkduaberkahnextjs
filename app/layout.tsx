@@ -19,6 +19,10 @@ export const metadata: Metadata = {
     default: "LPK Dua Berkah - Lembaga Pelatihan Kerja Terakreditasi Lombok Timur",
     template: "%s | LPK Dua Berkah",
   },
+  icons: {
+    icon: "/img/logo.png",
+    apple: "/img/logo.png",
+  },
   description: "LPK Dua Berkah adalah lembaga pelatihan kerja terakreditasi di Lombok Timur. Menyediakan pelatihan menjahit, tata rias, dan wirausaha konveksi dengan sertifikasi resmi dan instruktur berpengalaman.",
   keywords: [
     "LPK Lombok Timur",
