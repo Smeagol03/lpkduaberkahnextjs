@@ -2,8 +2,24 @@ import { Metadata } from 'next';
 import PaketCard from '@/components/public/PaketCard';
 
 export const metadata: Metadata = {
-  title: 'Program Pelatihan - LPK Dua Berkah',
-  description: 'Temukan berbagai program pelatihan yang tersedia di LPK Dua Berkah',
+  title: 'Program Pelatihan Menjahit dan Tata Rias',
+  description: 'Pilih program pelatihan vokasional di LPK Dua Berkah: Paket Menjahit, Tata Rias, dan Wirausaha Konveksi. Sertifikasi resmi, instruktur berpengalaman, dan kurikulum terkini.',
+  keywords: [
+    'program pelatihan LPK',
+    'paket pelatihan menjahit',
+    'paket tata rias',
+    'kursus konveksi',
+    'pelatihan vokasional Lombok',
+    'paket 1 sampai 5 LPK',
+  ],
+  openGraph: {
+    title: 'Program Pelatihan - LPK Dua Berkah',
+    description: 'Pilih program pelatihan vokasional di LPK Dua Berkah dengan berbagai paket dan sertifikasi resmi.',
+    url: 'https://lpkduaberkah.com/paket',
+  },
+  alternates: {
+    canonical: 'https://lpkduaberkah.com/paket',
+  },
 };
 
 export default function PaketPage() {

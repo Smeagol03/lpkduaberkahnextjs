@@ -6,29 +6,78 @@ interface Params {
   slug: string;
 }
 
-const paketImages: Record<string, { image: string; title: string }> = {
-  paket1: { image: "/img/paket/pkt1.webp", title: "Paket 1" },
-  paket2: { image: "/img/paket/pkt2.webp", title: "Paket 2" },
-  paket3: { image: "/img/paket/pkt3.webp", title: "Paket 3" },
-  paket4: { image: "/img/paket/pkt4.webp", title: "Paket 4" },
-  paket5: { image: "/img/paket/pkt5.webp", title: "Paket 5" },
+const paketData: Record<string, { image: string; title: string; description: string; price: string }> = {
+  paket1: { 
+    image: "/img/paket/pkt1.webp", 
+    title: "Paket 1 - Pelatihan Dasar",
+    description: "Paket pelatihan dasar dengan 5 modul pelatihan. Cocok untuk pemula yang ingin memulai karir di bidang menjahit dan tata rias.",
+    price: "Rp 2.000.000"
+  },
+  paket2: { 
+    image: "/img/paket/pkt2.webp", 
+    title: "Paket 2 - Pelatihan Menengah",
+    description: "Paket pelatihan menengah dengan 11 modul pelatihan. Meningkatkan keterampilan dengan teknik yang lebih advanced.",
+    price: "Rp 3.500.000"
+  },
+  paket3: { 
+    image: "/img/paket/pkt3.webp", 
+    title: "Paket 3 - Pelatihan Lengkap",
+    description: "Paket pelatihan lengkap dengan 24 modul pelatihan. Kurikulum komprehensif untuk siap kerja dan wirausaha.",
+    price: "Rp 6.000.000"
+  },
+  paket4: { 
+    image: "/img/paket/pkt4.webp", 
+    title: "Paket 4 - Pelatihan Advanced",
+    description: "Paket pelatihan advanced dengan 26 modul. Untuk peserta yang ingin menguasai semua aspek industri kreatif.",
+    price: "Rp 14.000.000"
+  },
+  paket5: { 
+    image: "/img/paket/pkt5.webp", 
+    title: "Paket 5 - Program Premium",
+    description: "Program pelatihan premium dengan sertifikasi lengkap. Mencetak tenaga terampil siap kerja dan berwirausaha.",
+    price: "Rp 16.000.000"
+  },
 };
 
 export async function generateMetadata(
   { params }: { params: Promise<Params> }
 ): Promise<Metadata> {
-
   const { slug } = await params;
-  const paket = paketImages[slug];
+  const paket = paketData[slug];
 
   if (!paket) {
     return {
-      title: 'Paket Tidak Ditemukan - LPK Dua Berkah',
+      title: 'Paket Tidak Ditemukan',
+      description: 'Halaman paket pelatihan yang Anda cari tidak ditemukan.',
     };
   }
 
   return {
-    title: `${paket.title} - Program Pelatihan`,
+    title: paket.title,
+    description: paket.description,
+    keywords: [
+      slug,
+      `pelatihan ${paket.title.toLowerCase()}`,
+      'program pelatihan LPK',
+      'kursus menjahit Lombok',
+      'pelatihan tata rias NTB',
+    ],
+    openGraph: {
+      title: `${paket.title} - LPK Dua Berkah`,
+      description: paket.description,
+      url: `https://lpkduaberkah.com/paket/${slug}`,
+      images: [
+        {
+          url: paket.image,
+          width: 1200,
+          height: 800,
+          alt: paket.title,
+        },
+      ],
+    },
+    alternates: {
+      canonical: `https://lpkduaberkah.com/paket/${slug}`,
+    },
   };
 }
 
@@ -37,7 +86,7 @@ export default async function PaketDetailPage(
 ) {
 
   const { slug } = await params;
-  const paket = paketImages[slug];
+  const paket = paketData[slug];
 
   if (!paket) {
     return <div>Paket tidak ditemukan</div>;

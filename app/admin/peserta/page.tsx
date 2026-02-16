@@ -1,9 +1,13 @@
-// app/admin/peserta/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { usePeserta } from '@/hooks/usePeserta';
 import DataTable from '@/components/admin/DataTable';
+import PageHeader from '@/components/admin/PageHeader';
+import SearchInput from '@/components/admin/SearchInput';
+import FilterSelect from '@/components/admin/FilterSelect';
+import StatusBadge from '@/components/admin/StatusBadge';
+import ExportButton from '@/components/admin/ExportButton';
 import FormPeserta from '@/components/forms/FormPeserta';
 import { useRouter } from 'next/navigation';
 import { Peserta } from '@/services/pesertaService';
@@ -12,29 +16,36 @@ export default function PesertaPage() {
   const { peserta, loading, error, addPeserta, updatePesertaById, removePeserta } = usePeserta();
   const [showForm, setShowForm] = useState(false);
   const [editingPeserta, setEditingPeserta] = useState<any>(null);
-  const [filterStatus, setFilterStatus] = useState<string>('all'); // Filter status
-  const [filteredPeserta, setFilteredPeserta] = useState<Peserta[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
   const router = useRouter();
 
   useEffect(() => {
-    // Cek apakah pengguna sudah login sebagai admin
     const adminStatus = localStorage.getItem('adminUser');
     if (!adminStatus) {
       router.push('/admin/login');
     }
+  }, [router]);
 
-    // Filter peserta berdasarkan status yang dipilih
-    let filtered = filterStatus === 'all' ? peserta : peserta.filter(p => p.statusPeserta === filterStatus);
+  const filteredPeserta = useMemo(() => {
+    let result = filterStatus === 'all' ? peserta : peserta.filter(p => p.statusPeserta === filterStatus);
     
-    // Urutkan berdasarkan tanggal daftar dari terbaru ke terlama
-    filtered.sort((a, b) => {
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      result = result.filter(p =>
+        (p.informasiPribadi?.namaLengkap || '').toLowerCase().includes(term) ||
+        (p.informasiPribadi?.noHP || '').toLowerCase().includes(term) ||
+        (p.informasiPribadi?.nik || '').toLowerCase().includes(term) ||
+        (p.paketPelatihan || '').toLowerCase().includes(term)
+      );
+    }
+    
+    return result.sort((a, b) => {
       const dateA = a.tanggalDaftar ? new Date(a.tanggalDaftar).getTime() : 0;
       const dateB = b.tanggalDaftar ? new Date(b.tanggalDaftar).getTime() : 0;
-      return dateB - dateA; // Urutan descending (terbaru ke terlama)
+      return dateB - dateA;
     });
-    
-    setFilteredPeserta(filtered);
-  }, [peserta, filterStatus, router]);
+  }, [peserta, filterStatus, searchTerm]);
 
   const handleEdit = (record: any) => {
     setEditingPeserta(record);
@@ -53,10 +64,24 @@ export default function PesertaPage() {
 
   const handleSubmit = async (data: any) => {
     try {
+      const pesertaData = {
+        informasiPribadi: data.informasiPribadi,
+        pendidikanPekerjaan: data.pendidikanPekerjaan,
+        motivasiReferensi: data.motivasiReferensi,
+        paketPelatihan: data.paketPelatihan,
+        statusPeserta: data.statusPeserta,
+        statusPendaftaran: data.statusPendaftaran,
+        tanggalDaftar: editingPeserta?.tanggalDaftar || new Date().toISOString(),
+        validasi: editingPeserta?.validasi || {
+          inputDivalidasi: false,
+          waktuValidasi: ''
+        }
+      };
+      
       if (editingPeserta) {
-        await updatePesertaById(editingPeserta.id, data);
+        await updatePesertaById(editingPeserta.id, pesertaData);
       } else {
-        await addPeserta(data);
+        await addPeserta(pesertaData);
       }
       setShowForm(false);
       setEditingPeserta(null);
@@ -75,57 +100,39 @@ export default function PesertaPage() {
   };
 
   const columns = [
-    {
-      key: 'informasiPribadi.namaLengkap',
-      title: 'Nama'
-    },
-    {
-      key: 'informasiPribadi.noHP',
-      title: 'Nomor HP'
-    },
-    {
-      key: 'paketPelatihan',
-      title: 'Program'
-    },
+    { key: 'informasiPribadi.namaLengkap', title: 'Nama' },
+    { key: 'informasiPribadi.noHP', title: 'No. HP' },
+    { key: 'paketPelatihan', title: 'Program' },
     {
       key: 'statusPeserta',
       title: 'Status',
-      render: (value: string) => (
-        <span className={`px-2 py-1 rounded-full text-xs ${
-          value === 'baru' ? 'bg-yellow-100 text-yellow-800' :
-          value === 'aktif' ? 'bg-green-100 text-green-800' :
-          value === 'lulus' ? 'bg-blue-100 text-blue-800' :
-          'bg-red-100 text-red-800'
-        }`}>
-          {value ? value.charAt(0).toUpperCase() + value.slice(1) : '-'}
-        </span>
-      )
+      render: (value: string) => <StatusBadge status={value} type="peserta" />
     },
     {
       key: 'tanggalDaftar',
       title: 'Tanggal Daftar',
-      render: (value: string) => new Date(value).toLocaleDateString('id-ID')
+      render: (value: string) => value ? new Date(value).toLocaleDateString('id-ID') : '-'
     },
     {
       key: 'actions',
       title: 'Aksi',
       render: (_: any, record: any) => (
-        <div className="flex space-x-2">
+        <div className="flex gap-1">
           <button
             onClick={() => handleViewDetails(record.id)}
-            className="text-blue-600 hover:text-blue-900"
+            className="px-3 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
           >
             Detail
           </button>
           <button
             onClick={() => handleEdit(record)}
-            className="text-blue-600 hover:text-blue-900"
+            className="px-3 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
           >
             Edit
           </button>
           <button
             onClick={() => handleDelete(record.id)}
-            className="text-red-600 hover:text-red-900"
+            className="px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           >
             Hapus
           </button>
@@ -134,60 +141,114 @@ export default function PesertaPage() {
     }
   ];
 
-  if (loading) return <div className="text-center py-8">Memuat data peserta...</div>;
-  if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
+  const exportColumns = [
+    { key: 'informasiPribadi.namaLengkap', label: 'Nama Lengkap' },
+    { key: 'informasiPribadi.nik', label: 'NIK' },
+    { key: 'informasiPribadi.noHP', label: 'No. HP' },
+    { key: 'informasiPribadi.alamat', label: 'Alamat' },
+    { key: 'informasiPribadi.jenisKelamin', label: 'Jenis Kelamin' },
+    { key: 'informasiPribadi.tempatLahir', label: 'Tempat Lahir' },
+    { key: 'informasiPribadi.tanggalLahir', label: 'Tanggal Lahir' },
+    { key: 'pendidikanPekerjaan.pendidikanTerakhir', label: 'Pendidikan Terakhir' },
+    { key: 'pendidikanPekerjaan.pekerjaanSaatIni', label: 'Pekerjaan' },
+    { key: 'paketPelatihan', label: 'Paket Pelatihan' },
+    { key: 'statusPeserta', label: 'Status Peserta' },
+    { key: 'tanggalDaftar', label: 'Tanggal Daftar' },
+  ];
+
+  const filterOptions = [
+    { value: 'all', label: 'Semua Status' },
+    { value: 'baru', label: 'Baru' },
+    { value: 'aktif', label: 'Aktif' },
+    { value: 'lulus', label: 'Lulus' },
+    { value: 'ditolak', label: 'Ditolak' },
+  ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center">
+        <p className="text-red-600 dark:text-red-400">Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold">Data Peserta</h1>
-        
-        <div className="flex flex-wrap gap-2">
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">Semua Status</option>
-            <option value="baru">Baru</option>
-            <option value="aktif">Aktif</option>
-            <option value="lulus">Lulus</option>
-            <option value="ditolak">Ditolak</option>
-          </select>
-          
-          <button
-            onClick={() => {
-              setEditingPeserta(null);
-              setShowForm(true);
-            }}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
-          >
-            Tambah Peserta
-          </button>
-          
-          <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1.5 rounded-full flex items-center">
-            {filteredPeserta.length} peserta
-          </span>
-        </div>
-      </div>
+      <PageHeader
+        title="Data Peserta"
+        badge={{ count: filteredPeserta.length, label: 'peserta' }}
+        actions={
+          <>
+            <SearchInput
+              value={searchTerm}
+              onChange={setSearchTerm}
+              placeholder="Cari nama, HP, NIK..."
+              className="w-full sm:w-64"
+            />
+            <FilterSelect
+              value={filterStatus}
+              onChange={setFilterStatus}
+              options={filterOptions}
+            />
+            <ExportButton
+              data={filteredPeserta}
+              filename="data_peserta"
+              columns={exportColumns}
+              label="Export Excel"
+            />
+            <button
+              onClick={() => {
+                setEditingPeserta(null);
+                setShowForm(true);
+              }}
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-xl transition-colors shadow-sm"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              <span className="hidden sm:inline">Tambah Peserta</span>
+              <span className="sm:hidden">Tambah</span>
+            </button>
+          </>
+        }
+      />
 
-      {showForm ? (
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
-          <h2 className="text-xl font-semibold mb-4">
-            {editingPeserta ? 'Edit Peserta' : 'Tambah Peserta Baru'}
-          </h2>
+      {showForm && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+              {editingPeserta ? 'Edit Peserta' : 'Tambah Peserta Baru'}
+            </h2>
+            <button
+              onClick={handleCancel}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            >
+              <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
           <FormPeserta
             initialData={editingPeserta}
             onSubmit={handleSubmit}
             onCancel={handleCancel}
           />
         </div>
-      ) : null}
+      )}
 
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
         <DataTable
           columns={columns}
           data={filteredPeserta}
+          emptyMessage="Tidak ada data peserta yang sesuai"
         />
       </div>
     </div>
