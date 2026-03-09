@@ -17,6 +17,10 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
       await logoutUser();
       localStorage.removeItem('admin');
       localStorage.removeItem('adminUser');
+      
+      // Clear session cookie
+      await fetch('/api/auth/session', { method: 'DELETE' });
+      
       router.push('/admin/login');
     } catch (error) {
       console.error('Error saat logout:', error);

@@ -88,12 +88,15 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className="flex items-center ps-2.5 mb-5"
             onClick={onClose}
           >
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-2">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center mr-2 shadow-lg shadow-blue-500/30">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Admin Panel</span>
+            <div className="flex flex-col">
+              <span className="self-center text-lg font-bold whitespace-nowrap dark:text-white text-gray-900">LPK Dua Berkah</span>
+              <span className="self-center text-xs whitespace-nowrap dark:text-gray-400 text-gray-500">Admin Panel</span>
+            </div>
           </Link>
 
           {/* Close button for mobile */}

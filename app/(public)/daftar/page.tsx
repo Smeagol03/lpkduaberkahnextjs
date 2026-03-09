@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { addPendaftar } from '@/services/pendaftarService';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 export default function DaftarPage() {
   const [formData, setFormData] = useState({
@@ -148,7 +148,7 @@ export default function DaftarPage() {
     <div className="min-h-screen bg-linear-to-b from-teal-50 to-green-50 py-12 relative overflow-hidden">
       <div className="absolute top-20 left-10 w-64 h-64 bg-teal-200/30 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-64 h-64 bg-green-200/30 rounded-full blur-3xl" />
-      
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="bg-linear-to-r from-teal-600 to-green-600 p-8 text-center">
@@ -164,8 +164,8 @@ export default function DaftarPage() {
                 </svg>
               </div>
             </motion.div>
-            
-            <motion.h1 
+
+            <motion.h1
               className="text-3xl font-bold text-white mb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -173,8 +173,8 @@ export default function DaftarPage() {
             >
               Formulir Pendaftaran
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               className="text-teal-100"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -186,7 +186,7 @@ export default function DaftarPage() {
 
           <div className="px-8 py-8">
             {success ? (
-              <motion.div 
+              <motion.div
                 className="bg-linear-to-r from-green-100 to-teal-100 border border-green-400 text-green-700 px-6 py-8 rounded-xl text-center"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -201,12 +201,12 @@ export default function DaftarPage() {
                 </div>
                 <h3 className="text-2xl font-bold text-green-800 mb-2">Pendaftaran Berhasil!</h3>
                 <p className="text-green-700 mb-4">Terima kasih telah mendaftar. Kami akan segera menghubungi Anda.</p>
-                
+
               </motion.div>
             ) : (
               <>
                 {error && (
-                  <motion.div 
+                  <motion.div
                     className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 mt-6"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}

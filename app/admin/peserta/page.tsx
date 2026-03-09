@@ -11,6 +11,7 @@ import ExportButton from '@/components/admin/ExportButton';
 import FormPeserta from '@/components/forms/FormPeserta';
 import { useRouter } from 'next/navigation';
 import { Peserta } from '@/services/pesertaService';
+import toast from 'react-hot-toast';
 
 export default function PesertaPage() {
   const { peserta, loading, error, addPeserta, updatePesertaById, removePeserta } = usePeserta();
@@ -55,9 +56,11 @@ export default function PesertaPage() {
   const handleDelete = async (id: string) => {
     if (confirm('Apakah Anda yakin ingin menghapus peserta ini?')) {
       try {
+        const loadingToast = toast.loading('Menghapus peserta...');
         await removePeserta(id);
-      } catch (err) {
-        console.error('Error deleting peserta:', err);
+        toast.success('Peserta berhasil dihapus', { id: loadingToast });
+      } catch (err: any) {
+        toast.error(err.message || 'Gagal menghapus peserta');
       }
     }
   };
@@ -77,16 +80,21 @@ export default function PesertaPage() {
           waktuValidasi: ''
         }
       };
-      
+
+      const loadingToast = toast.loading(editingPeserta ? 'Memperbarui peserta...' : 'Menambahkan peserta...');
+
       if (editingPeserta) {
         await updatePesertaById(editingPeserta.id, pesertaData);
+        toast.success('Peserta berhasil diperbarui', { id: loadingToast });
       } else {
         await addPeserta(pesertaData);
+        toast.success('Peserta berhasil ditambahkan', { id: loadingToast });
       }
+      
       setShowForm(false);
       setEditingPeserta(null);
-    } catch (err) {
-      console.error('Error saving peserta:', err);
+    } catch (err: any) {
+      toast.error(err.message || 'Gagal menyimpan peserta');
     }
   };
 

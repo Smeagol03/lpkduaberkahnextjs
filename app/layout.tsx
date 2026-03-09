@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Fredoka } from "next/font/google";
 import type { Metadata, Viewport } from "next";
+import { Toaster } from "react-hot-toast";
 
 const fredoka = Fredoka({ subsets: ["latin"], variable: "--font-fredoka" });
 
@@ -161,7 +162,34 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${fredoka.variable} font-sans`}>{children}</body>
+      <body className={`${fredoka.variable} font-sans`}>
+        {children}
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#fff',
+              color: '#363636',
+              borderRadius: '12px',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              padding: '16px',
+            },
+            success: {
+              iconTheme: {
+                primary: '#10b981',
+                secondary: '#fff',
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: '#ef4444',
+                secondary: '#fff',
+              },
+            },
+          }}
+        />
+      </body>
     </html>
   );
 }

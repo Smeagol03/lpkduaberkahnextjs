@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 
@@ -53,15 +53,28 @@ export default function LoginPage() {
     // Check if already logged in
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // Store admin session
-        localStorage.setItem('adminUser', JSON.stringify({
+        // Store admin session with timeout
+        const sessionData = {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
           timestamp: Date.now()
-        }));
+        };
+        localStorage.setItem('adminUser', JSON.stringify(sessionData));
+        
+        // Set session cookie via API
+        try {
+          await fetch('/api/auth/session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(sessionData)
+          });
+        } catch (error) {
+          console.error('Failed to set session cookie:', error);
+        }
+        
         setIsLoggedIn(true);
-        // Small delay to ensure localStorage is set before redirect
+        // Small delay to ensure localStorage and cookie are set before redirect
         await new Promise(resolve => setTimeout(resolve, 100));
         router.push('/admin/dashboard');
       }
