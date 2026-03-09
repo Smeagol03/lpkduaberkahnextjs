@@ -46,13 +46,13 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     // Check if already logged in
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
+      if (user && !isRedirecting) {
         // Store admin session with timeout
         const sessionData = {
           uid: user.uid,
@@ -61,7 +61,7 @@ export default function LoginPage() {
           timestamp: Date.now()
         };
         localStorage.setItem('adminUser', JSON.stringify(sessionData));
-        
+
         // Set session cookie via API
         try {
           await fetch('/api/auth/session', {
@@ -72,8 +72,8 @@ export default function LoginPage() {
         } catch (error) {
           console.error('Failed to set session cookie:', error);
         }
-        
-        setIsLoggedIn(true);
+
+        setIsRedirecting(true);
         // Small delay to ensure localStorage and cookie are set before redirect
         await new Promise(resolve => setTimeout(resolve, 100));
         router.push('/admin/dashboard');
@@ -81,7 +81,7 @@ export default function LoginPage() {
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, [router, isRedirecting]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,10 +97,8 @@ export default function LoginPage() {
       }
 
       // Sign in with Firebase Auth
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      
-      // Success - redirect to dashboard
-      router.push('/admin/dashboard');
+      await signInWithEmailAndPassword(auth, email, password);
+      // Redirect will be handled by onAuthStateChanged callback
     } catch (err: any) {
       // Handle Firebase auth errors
       const errorMessages: Record<string, string> = {
@@ -111,9 +109,8 @@ export default function LoginPage() {
         'auth/network-request-failed': 'Koneksi internet bermasalah',
         'auth/invalid-credential': 'Email atau kata sandi salah',
       };
-      
+
       setError(errorMessages[err.code] || err.message || 'Login gagal. Coba lagi.');
-    } finally {
       setLoading(false);
     }
   };
