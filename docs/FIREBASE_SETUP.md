@@ -359,3 +359,10 @@ Jika ada masalah:
 **Last Updated:** March 9, 2026  
 **Version:** 1.0.0  
 **Project:** LPK Dua Berkah Next.js
+
+---
+
+## 📚 Related Documentation
+
+- [DEPLOYMENT_DNS_GUIDE.md](./DEPLOYMENT_DNS_GUIDE.md) - Panduan DNS & Deployment ke Vercel/Hostinger
+- [SECURITY_IMPLEMENTATION.md](./SECURITY_IMPLEMENTATION.md) - Security implementation details

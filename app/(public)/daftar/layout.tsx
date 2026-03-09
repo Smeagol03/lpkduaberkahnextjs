@@ -2,6 +2,26 @@ import { Metadata } from 'next';
 
 const siteUrl = 'https://lpkduaberkah.com';
 
+// Breadcrumb Schema
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": siteUrl
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Daftar",
+      "item": `${siteUrl}/daftar`
+    }
+  ]
+};
+
 export const metadata: Metadata = {
   title: 'Daftar Pelatihan',
   description: 'Daftar sekarang untuk mengikuti pelatihan di LPK Dua Berkah. Pilih paket pelatihan menjahit, tata rias, atau wirausaha konveksi. Proses pendaftaran mudah dan cepat.',
@@ -27,5 +47,14 @@ export default function DaftarLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      {/* Breadcrumb Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {children}
+    </>
+  );
 }

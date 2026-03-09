@@ -1,6 +1,28 @@
 import { Metadata } from 'next';
 import PaketCard from '@/components/public/PaketCard';
 
+const siteUrl = 'https://lpkduaberkah.com';
+
+// Breadcrumb Schema
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": siteUrl
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Paket",
+      "item": `${siteUrl}/paket`
+    }
+  ]
+};
+
 export const metadata: Metadata = {
   title: 'Program Pelatihan Menjahit dan Tata Rias',
   description: 'Pilih program pelatihan vokasional di LPK Dua Berkah: Paket Menjahit, Tata Rias, dan Wirausaha Konveksi. Sertifikasi resmi, instruktur berpengalaman, dan kurikulum terkini.',
@@ -25,6 +47,12 @@ export const metadata: Metadata = {
 export default function PaketPage() {
   return (
     <div className="min-h-screen bg-linear-to-b from-blue-50 to-white py-12">
+      {/* Breadcrumb Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-blue-900 mb-4">Program Pelatihan Kami</h1>
