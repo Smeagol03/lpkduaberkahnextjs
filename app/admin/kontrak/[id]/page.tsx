@@ -21,12 +21,6 @@ export default function KontrakDetailPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Cek apakah pengguna sudah login sebagai admin
-    const adminStatus = localStorage.getItem('adminUser');
-    if (!adminStatus) {
-      router.push('/admin/login');
-    }
-
     const fetchKontrak = async () => {
       try {
         if (typeof id === 'string') {

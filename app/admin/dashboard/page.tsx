@@ -1,47 +1,42 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { onAuthStateChange } from '@/lib/auth';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import { usePeserta } from '@/hooks/usePeserta';
 import { useProgram } from '@/hooks/useProgram';
 import { usePendaftar } from '@/hooks/usePendaftar';
 import StatusBadge from '@/components/admin/StatusBadge';
-import { useRouter } from 'next/navigation';
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { user, isAuthenticated, isLoading, checkSession } = useAuth();
   const { peserta, loading: pesertaLoading } = usePeserta();
   const { programs, loading: programLoading } = useProgram();
   const { pendaftar, loading: pendaftarLoading } = usePendaftar();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const router = useRouter();
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    const adminData = localStorage.getItem('adminUser');
-    if (!adminData) {
-      const timer = setTimeout(() => {
-        router.push('/admin/login');
-      }, 100);
-      return () => clearTimeout(timer);
-    } else {
-      setIsAdmin(true);
-    }
-
-    const unsubscribe = onAuthStateChange((user) => {
-      if (!user) {
-        localStorage.removeItem('adminUser');
-        router.push('/admin/login');
-      } else {
-        setIsAdmin(true);
+    const validateSession = async () => {
+      if (!isLoading) {
+        if (!isAuthenticated) {
+          const hasValidSession = await checkSession();
+          if (!hasValidSession) {
+            router.push('/login');
+            return;
+          }
+        }
+        setIsChecking(false);
       }
-    });
+    };
 
-    return () => unsubscribe();
-  }, [router]);
+    validateSession();
+  }, [isAuthenticated, isLoading, checkSession, router]);
 
-  if (!isAdmin) {
+  if (isLoading || isChecking || !isAuthenticated) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
       </div>
     );
   }

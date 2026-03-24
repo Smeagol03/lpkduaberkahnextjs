@@ -3,19 +3,18 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { logoutUser } from '@/lib/auth';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
+  const { logout } = useAuth();
 
   const handleLogout = async () => {
     try {
-      await logoutUser();
-      // Hapus status admin dari localStorage
-      localStorage.removeItem('admin');
+      await logout();
       // Redirect to login page after logout
-      router.push('/admin/login');
+      router.push('/login');
     } catch (error) {
       console.error('Logout error:', error);
     }

@@ -1,13 +1,21 @@
 // hooks/useProgram.ts
 import { useState, useEffect } from 'react';
 import { Graduate, getAllGraduates, addGraduate as addGraduateService, updateGraduateById as updateGraduateByIdService, deleteGraduateById as deleteGraduateByIdService } from '@/services/programService';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const useProgram = () => {
   const [programs, setPrograms] = useState<Graduate[]>([]); // Renamed but keeping the same variable name for consistency
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    // Don't fetch if not authenticated
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+
     const fetchPrograms = async () => {
       try {
         const response = await getAllGraduates();
@@ -17,6 +25,7 @@ export const useProgram = () => {
           throw new Error(response.error || 'Failed to fetch graduates');
         }
       } catch (err) {
+        // Only set error, don't log to console (expected on logout)
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
         setLoading(false);
@@ -24,7 +33,7 @@ export const useProgram = () => {
     };
 
     fetchPrograms();
-  }, []);
+  }, [isAuthenticated]);
 
   const refreshPrograms = async () => {
     try {

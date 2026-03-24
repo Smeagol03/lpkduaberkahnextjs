@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { logoutUser } from '@/lib/auth';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AdminNavbarProps {
   onMenuClick: () => void;
@@ -11,17 +11,12 @@ interface AdminNavbarProps {
 export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
+  const { logout } = useAuth();
 
   const handleLogout = async () => {
     try {
-      await logoutUser();
-      localStorage.removeItem('admin');
-      localStorage.removeItem('adminUser');
-      
-      // Clear session cookie
-      await fetch('/api/auth/session', { method: 'DELETE' });
-      
-      router.push('/admin/login');
+      await logout();
+      router.push('/login');
     } catch (error) {
       console.error('Error saat logout:', error);
     }

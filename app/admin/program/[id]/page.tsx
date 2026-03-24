@@ -16,12 +16,6 @@ export default function ProgramDetailPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Cek apakah pengguna sudah login sebagai admin
-    const adminStatus = localStorage.getItem('adminUser');
-    if (!adminStatus) {
-      router.push('/admin/login');
-    }
-
     const fetchProgram = async () => {
       try {
         // Handle both string and array forms of id from useParams

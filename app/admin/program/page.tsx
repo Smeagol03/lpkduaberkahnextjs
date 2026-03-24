@@ -15,12 +15,6 @@ export default function ProgramPage() {
   const [filterStatus, setFilterStatus] = useState('all');
   const router = useRouter();
 
-  useEffect(() => {
-    const adminStatus = localStorage.getItem('adminUser');
-    if (!adminStatus) {
-      router.push('/admin/login');
-    }
-  }, [router]);
 
   const filteredPrograms = useMemo(() => {
     let result = filterStatus === 'all' ? programs : programs.filter(p => p.statusPeserta === filterStatus);

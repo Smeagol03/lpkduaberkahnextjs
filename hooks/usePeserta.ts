@@ -1,13 +1,21 @@
 // hooks/usePeserta.ts
 import { useState, useEffect } from 'react';
 import { Peserta, getAllPeserta, getPesertaById, addPeserta as addPesertaService, updatePesertaById as updatePesertaByIdService, deletePesertaById as deletePesertaByIdService } from '@/services/pesertaService';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const usePeserta = () => {
   const [peserta, setPeserta] = useState<Peserta[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    // Don't fetch if not authenticated
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+
     const fetchPeserta = async () => {
       try {
         const response = await getAllPeserta();
@@ -17,6 +25,7 @@ export const usePeserta = () => {
           throw new Error(response.error || 'Failed to fetch peserta');
         }
       } catch (err) {
+        // Only set error, don't log to console (expected on logout)
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
         setLoading(false);
@@ -24,7 +33,7 @@ export const usePeserta = () => {
     };
 
     fetchPeserta();
-  }, []);
+  }, [isAuthenticated]);
 
   const refreshPeserta = async () => {
     try {

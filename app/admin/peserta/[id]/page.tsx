@@ -17,12 +17,6 @@ export default function PesertaDetailPage() {
   const [graduationLoading, setGraduationLoading] = useState(false);
 
   useEffect(() => {
-    // Cek apakah pengguna sudah login sebagai admin
-    const adminStatus = localStorage.getItem('adminUser');
-    if (!adminStatus) {
-      router.push('/admin/login');
-    }
-
     const fetchPeserta = async () => {
       try {
         if (typeof id === 'string') {

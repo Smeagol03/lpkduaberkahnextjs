@@ -1,13 +1,11 @@
-// app/admin/login/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { useAuth } from '@/contexts/AuthContext';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -40,48 +38,34 @@ const formVariants = {
   },
 };
 
-export default function LoginPage() {
+export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const [isRedirecting, setIsRedirecting] = useState(false);
+  const searchParams = useSearchParams();
+  const { isAuthenticated, login, checkSession } = useAuth();
+  const redirectUrl = searchParams.get('redirect') || '/admin/dashboard';
 
+  // Check if already logged in
   useEffect(() => {
-    // Check if already logged in
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user && !isRedirecting) {
-        // Store admin session with timeout
-        const sessionData = {
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          timestamp: Date.now()
-        };
-        localStorage.setItem('adminUser', JSON.stringify(sessionData));
-
-        // Set session cookie via API
-        try {
-          await fetch('/api/auth/session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(sessionData)
-          });
-        } catch (error) {
-          console.error('Failed to set session cookie:', error);
-        }
-
-        setIsRedirecting(true);
-        // Small delay to ensure localStorage and cookie are set before redirect
-        await new Promise(resolve => setTimeout(resolve, 100));
-        router.push('/admin/dashboard');
+    const checkExistingSession = async () => {
+      if (isAuthenticated) {
+        router.push(redirectUrl);
+        return;
       }
-    });
 
-    return () => unsubscribe();
-  }, [router, isRedirecting]);
+      const hasValidSession = await checkSession();
+      if (hasValidSession) {
+        router.push(redirectUrl);
+      }
+    };
+
+    checkExistingSession();
+  }, [isAuthenticated, checkSession, router, redirectUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,9 +80,11 @@ export default function LoginPage() {
         return;
       }
 
-      // Sign in with Firebase Auth
-      await signInWithEmailAndPassword(auth, email, password);
-      // Redirect will be handled by onAuthStateChanged callback
+      // Login using AuthContext
+      await login(email, password, rememberMe);
+      
+      // Redirect to dashboard or original destination
+      router.push(redirectUrl);
     } catch (err: any) {
       // Handle Firebase auth errors
       const errorMessages: Record<string, string> = {
@@ -261,6 +247,21 @@ export default function LoginPage() {
                   )}
                 </button>
               </div>
+            </div>
+
+            {/* Remember Me */}
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+              />
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                Ingat saya (30 hari)
+              </label>
             </div>
 
             {/* Submit Button */}

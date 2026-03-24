@@ -21,13 +21,6 @@ export default function PesertaPage() {
   const [filterStatus, setFilterStatus] = useState('all');
   const router = useRouter();
 
-  useEffect(() => {
-    const adminStatus = localStorage.getItem('adminUser');
-    if (!adminStatus) {
-      router.push('/admin/login');
-    }
-  }, [router]);
-
   const filteredPeserta = useMemo(() => {
     let result = filterStatus === 'all' ? peserta : peserta.filter(p => p.statusPeserta === filterStatus);
     

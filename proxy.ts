@@ -5,55 +5,73 @@ import type { NextRequest } from 'next/server';
 const adminRoutes = '/admin';
 
 // Public routes that should redirect to dashboard if logged in
-const publicAdminRoutes = ['/admin/login'];
+const publicAuthRoutes = ['/login'];
+
+// API routes that should be ignored
+const apiRoutes = '/api';
 
 export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
   
   // Get session from cookie
   const sessionCookie = request.cookies.get('adminSession');
-  const hasSession = !!sessionCookie;
+  let hasValidSession = false;
+  let isSessionExpired = false;
 
-  // Check if trying to access admin routes
-  if (pathname.startsWith(adminRoutes)) {
-    // If accessing login page and already has session, redirect to dashboard
-    if (publicAdminRoutes.some(route => pathname.startsWith(route))) {
-      if (hasSession) {
-        return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+  if (sessionCookie) {
+    try {
+      const session = JSON.parse(decodeURIComponent(sessionCookie.value));
+      const now = Date.now();
+
+      // Check session expiration
+      if (session.expiresAt && now > session.expiresAt) {
+        isSessionExpired = true;
+      } else {
+        hasValidSession = true;
       }
-      return NextResponse.next();
-    }
-
-    // If accessing other admin routes without session, redirect to login
-    if (!hasSession) {
-      const loginUrl = new URL('/admin/login', request.url);
-      loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-
-    // Validate session expiration
-    if (hasSession) {
-      try {
-        const session = JSON.parse(decodeURIComponent(sessionCookie.value));
-        const now = Date.now();
-        const sessionAge = now - session.timestamp;
-        const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
-
-        if (sessionAge > SESSION_DURATION) {
-          // Session expired, redirect to login
-          const response = NextResponse.redirect(new URL('/admin/login', request.url));
-          response.cookies.delete('adminSession');
-          return response;
-        }
-      } catch (error) {
-        // Invalid session, redirect to login
-        const response = NextResponse.redirect(new URL('/admin/login', request.url));
-        response.cookies.delete('adminSession');
-        return response;
-      }
+    } catch (error) {
+      // Invalid session format
+      hasValidSession = false;
     }
   }
 
+  // Handle login page
+  if (pathname === '/login') {
+    // If already has valid session, redirect to dashboard
+    if (hasValidSession && !isSessionExpired) {
+      const dashboardUrl = new URL('/admin/dashboard', request.url);
+      return NextResponse.redirect(dashboardUrl);
+    }
+
+    // If session expired, clear cookie but allow access to login
+    if (isSessionExpired) {
+      const response = NextResponse.next();
+      response.cookies.delete('adminSession');
+      return response;
+    }
+
+    return NextResponse.next();
+  }
+
+  // Handle admin routes
+  if (pathname.startsWith(adminRoutes)) {
+    // Check if accessing public admin routes (if any)
+    // Currently no public routes within /admin
+
+    // If no valid session, redirect to login
+    if (!hasValidSession || isSessionExpired) {
+      // Clear expired cookie if exists
+      const response = NextResponse.redirect(new URL(`/login?redirect=${encodeURIComponent(pathname + search)}`, request.url));
+      if (isSessionExpired) {
+        response.cookies.delete('adminSession');
+      }
+      return response;
+    }
+
+    return NextResponse.next();
+  }
+
+  // Handle other routes
   return NextResponse.next();
 }
 

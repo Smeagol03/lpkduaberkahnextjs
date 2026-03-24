@@ -41,12 +41,6 @@ export default function EditPendaftarPage() {
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
-    // Cek apakah pengguna sudah login sebagai admin
-    const adminStatus = localStorage.getItem('adminUser');
-    if (!adminStatus) {
-      router.push('/admin/login');
-    }
-
     const fetchPendaftar = async () => {
       try {
         if (typeof id === 'string') {

@@ -19,12 +19,6 @@ export default function KontrakPage() {
   const [filterStatus, setFilterStatus] = useState('all');
   const router = useRouter();
 
-  useEffect(() => {
-    const adminStatus = localStorage.getItem('adminUser');
-    if (!adminStatus) {
-      router.push('/admin/login');
-    }
-  }, [router]);
 
   const filteredKontrak = useMemo(() => {
     let result = filterStatus === 'all' ? kontrak : kontrak.filter(k => k.status === filterStatus);

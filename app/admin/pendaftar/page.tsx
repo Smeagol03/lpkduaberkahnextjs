@@ -17,12 +17,6 @@ export default function PendaftarPage() {
   const [filterStatus, setFilterStatus] = useState('menunggu');
   const router = useRouter();
 
-  useEffect(() => {
-    const adminStatus = localStorage.getItem('adminUser');
-    if (!adminStatus) {
-      router.push('/admin/login');
-    }
-  }, [router]);
 
   const filteredPendaftar = useMemo(() => {
     let result = filterStatus === 'all' ? pendaftar : pendaftar.filter(p => p.statusPendaftaran === filterStatus);

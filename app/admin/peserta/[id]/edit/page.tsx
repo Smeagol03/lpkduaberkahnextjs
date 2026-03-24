@@ -43,12 +43,6 @@ export default function EditPesertaPage() {
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
-    // Cek apakah pengguna sudah login sebagai admin
-    const adminStatus = localStorage.getItem('adminUser');
-    if (!adminStatus) {
-      router.push('/admin/login');
-    }
-
     const fetchPeserta = async () => {
       try {
         console.log('[DEBUG] EditPesertaPage - Fetching peserta with ID:', id);

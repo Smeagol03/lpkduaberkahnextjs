@@ -52,6 +52,6 @@ export function isAdmin(): boolean {
  */
 export function redirectToLogin(router: { push: (path: string) => void }) {
   if (typeof window !== 'undefined') {
-    router.push('/admin/login');
+    router.push('/login');
   }
 }

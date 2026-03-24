@@ -1,13 +1,21 @@
 // hooks/usePendaftar.ts
 import { useState, useEffect } from 'react';
 import { Pendaftar, getAllPendaftar, getPendaftarById, addPendaftar as addPendaftarService, updatePendaftarById as updatePendaftarByIdService, deletePendaftarById as deletePendaftarByIdService, approvePendaftar, rejectPendaftar } from '@/services/pendaftarService';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const usePendaftar = () => {
   const [pendaftar, setPendaftar] = useState<Pendaftar[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    // Don't fetch if not authenticated
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+
     const fetchPendaftar = async () => {
       try {
         const response = await getAllPendaftar();
@@ -17,6 +25,7 @@ export const usePendaftar = () => {
           throw new Error(response.error || 'Failed to fetch pendaftar');
         }
       } catch (err) {
+        // Only set error, don't log to console (expected on logout)
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
         setLoading(false);
@@ -24,7 +33,7 @@ export const usePendaftar = () => {
     };
 
     fetchPendaftar();
-  }, []);
+  }, [isAuthenticated]);
 
   const refreshPendaftar = async () => {
     try {
