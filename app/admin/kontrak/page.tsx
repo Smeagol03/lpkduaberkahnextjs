@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useKontrak } from '@/hooks/useKontrak';
 import DataTable from '@/components/admin/DataTable';
 import PageHeader from '@/components/admin/PageHeader';
@@ -9,7 +9,7 @@ import FilterSelect from '@/components/admin/FilterSelect';
 import StatusBadge from '@/components/admin/StatusBadge';
 import FormKontrak from '@/components/forms/FormKontrak';
 import { useRouter } from 'next/navigation';
-import { Kontrak } from '@/services/kontrakService';
+import toast from 'react-hot-toast';
 
 export default function KontrakPage() {
   const { kontrak, loading, error, addKontrak, updateKontrakById, removeKontrak } = useKontrak();
@@ -19,7 +19,6 @@ export default function KontrakPage() {
   const [filterStatus, setFilterStatus] = useState('all');
   const router = useRouter();
 
-
   const filteredKontrak = useMemo(() => {
     let result = filterStatus === 'all' ? kontrak : kontrak.filter(k => k.status === filterStatus);
     
@@ -27,7 +26,7 @@ export default function KontrakPage() {
       const term = searchTerm.toLowerCase();
       result = result.filter(k =>
         (k.nomorKontrak || '').toLowerCase().includes(term) ||
-        (k.namaPeserta || '').toLowerCase().includes(term) || // Bisa cari via nama
+        (k.namaPeserta || '').toLowerCase().includes(term) ||
         (k.pesertaId || '').toLowerCase().includes(term) ||
         (k.programId || '').toLowerCase().includes(term)
       );
@@ -48,24 +47,29 @@ export default function KontrakPage() {
   const handleDelete = async (id: string) => {
     if (confirm('Apakah Anda yakin ingin menghapus kontrak ini?')) {
       try {
+        const loadingToast = toast.loading('Menghapus kontrak...');
         await removeKontrak(id);
-      } catch (err) {
-        console.error('Error deleting kontrak:', err);
+        toast.success('Kontrak berhasil dihapus', { id: loadingToast });
+      } catch (err: any) {
+        toast.error(err.message || 'Gagal menghapus kontrak');
       }
     }
   };
 
   const handleSubmit = async (data: any) => {
     try {
+      const loadingToast = toast.loading(editingKontrak ? 'Memperbarui kontrak...' : 'Menambahkan kontrak...');
       if (editingKontrak) {
         await updateKontrakById(editingKontrak.id, data);
+        toast.success('Kontrak berhasil diperbarui', { id: loadingToast });
       } else {
         await addKontrak(data);
+        toast.success('Kontrak berhasil ditambahkan', { id: loadingToast });
       }
       setShowForm(false);
       setEditingKontrak(null);
-    } catch (err) {
-      console.error('Error saving kontrak:', err);
+    } catch (err: any) {
+      toast.error(err.message || 'Gagal menyimpan kontrak');
     }
   };
 
@@ -76,7 +80,11 @@ export default function KontrakPage() {
 
   const columns = [
     { key: 'nomorKontrak', title: 'No. Kontrak' },
-    { key: 'pesertaId', title: 'ID Peserta' },
+    { 
+      key: 'namaPeserta', 
+      title: 'Nama Peserta',
+      render: (value: string, record: any) => value || record.pesertaId 
+    },
     { key: 'programId', title: 'ID Program' },
     {
       key: 'tanggalMulai',
@@ -206,11 +214,6 @@ export default function KontrakPage() {
           columns={columns}
           data={filteredKontrak}
           emptyMessage="Tidak ada data kontrak yang sesuai"
-        />
-      </div>
-    </div>
-  );
-}suai"
         />
       </div>
     </div>
