@@ -10,8 +10,16 @@ export async function POST(request: Request) {
     const { formData, token } = await request.json();
 
     // 1. Verifikasi Token Turnstile ke Cloudflare
-    // GANTI dengan Secret Key asli dari dashboard Cloudflare Anda
-    const TURNSTILE_SECRET_KEY = '0x4AAAAAAC_tNB_RFLWjuyPz8fe0A5L_UOE'; 
+    // Mengambil Secret Key dari environment variable agar aman
+    const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY; 
+
+    if (!TURNSTILE_SECRET_KEY) {
+      console.error('Missing TURNSTILE_SECRET_KEY in environment variables');
+      return NextResponse.json(
+        { success: false, error: 'Konfigurasi server tidak lengkap.' },
+        { status: 500 }
+      );
+    }
 
     const verifyResponse = await fetch(
       'https://challenges.cloudflare.com/turnstile/v0/siteverify',

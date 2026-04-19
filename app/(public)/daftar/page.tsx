@@ -4,9 +4,8 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Turnstile } from '@marsidev/react-turnstile';
 
-// Site Key Testing dari Cloudflare (Selalu Lolos). 
-// GANTI dengan Site Key asli dari Dashboard Cloudflare Anda nanti.
-const TURNSTILE_SITE_KEY = '0x4AAAAAAC_tNBy6hf4wgJdi';
+// Mengambil Site Key dari environment variable (Client-side)
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '';
 
 export default function DaftarPage() {
   const [formData, setFormData] = useState({
