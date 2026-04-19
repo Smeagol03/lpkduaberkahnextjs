@@ -1,8 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { addPendaftar } from '@/services/pendaftarService';
 import { motion } from 'motion/react';
+import { Turnstile } from '@marsidev/react-turnstile';
+
+// Site Key Testing dari Cloudflare (Selalu Lolos). 
+// GANTI dengan Site Key asli dari Dashboard Cloudflare Anda nanti.
+const TURNSTILE_SITE_KEY = '0x4AAAAAAC_tNBy6hf4wgJdi';
 
 export default function DaftarPage() {
   const [formData, setFormData] = useState({
@@ -35,6 +39,7 @@ export default function DaftarPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -68,6 +73,13 @@ export default function DaftarPage() {
     e.preventDefault();
     setLoading(true);
     setError('');
+
+    // Validasi Token Turnstile
+    if (!token) {
+      setError('Silakan selesaikan verifikasi "Bukan Robot" terlebih dahulu.');
+      setLoading(false);
+      return;
+    }
 
     try {
       if (!formData.informasiPribadi.namaLengkap.trim()) {
@@ -104,10 +116,23 @@ export default function DaftarPage() {
         }
       };
 
-      const result = await addPendaftar(dataToSubmit);
+      // Menggunakan API Route baru untuk pendaftaran agar verifikasi Turnstile dilakukan di Server
+      const response = await fetch('/api/daftar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formData: dataToSubmit,
+          token: token
+        }),
+      });
+
+      const result = await response.json();
 
       if (result.success) {
         setSuccess(true);
+        setToken(null);
         setFormData({
           informasiPribadi: {
             namaLengkap: '',
@@ -374,11 +399,10 @@ export default function DaftarPage() {
                       ].map((paket) => (
                         <label
                           key={paket.value}
-                          className={`flex items-start p-4 border rounded-lg transition-colors cursor-pointer ${
-                            formData.paketPelatihan === paket.value
+                          className={`flex items-start p-4 border rounded-lg transition-colors cursor-pointer ${formData.paketPelatihan === paket.value
                               ? 'border-purple-500 bg-purple-50'
                               : 'border-gray-200 hover:bg-purple-50'
-                          }`}
+                            }`}
                         >
                           <input
                             type="radio"
@@ -438,6 +462,19 @@ export default function DaftarPage() {
                         </select>
                       </div>
                     </div>
+                  </div>
+
+                  {/* Turnstile Widget */}
+                  <div className="flex justify-center py-4">
+                    <Turnstile
+                      siteKey={TURNSTILE_SITE_KEY}
+                      onSuccess={(token) => setToken(token)}
+                      onExpire={() => setToken(null)}
+                      onError={() => {
+                        setToken(null);
+                        setError('Gagal memverifikasi keamanan. Silakan coba lagi.');
+                      }}
+                    />
                   </div>
 
                   <motion.button
