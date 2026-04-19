@@ -1,6 +1,14 @@
 // hooks/usePendaftar.ts
 import { useState, useEffect } from 'react';
-import { Pendaftar, getAllPendaftar, getPendaftarById, addPendaftar as addPendaftarService, updatePendaftarById as updatePendaftarByIdService, deletePendaftarById as deletePendaftarByIdService, approvePendaftar, rejectPendaftar } from '@/services/pendaftarService';
+import { 
+  Pendaftar, 
+  getAllPendaftar, 
+  addPendaftar as addPendaftarService, 
+  updatePendaftarById as updatePendaftarByIdService, 
+  deletePendaftarById as deletePendaftarByIdService, 
+  approvePendaftar, 
+  rejectPendaftar 
+} from '@/services/pendaftarService';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const usePendaftar = () => {
@@ -9,75 +17,59 @@ export const usePendaftar = () => {
   const [error, setError] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    // Don't fetch if not authenticated
-    if (!isAuthenticated) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchPendaftar = async () => {
-      try {
-        const response = await getAllPendaftar();
-        if (response.success) {
-          setPendaftar(response.data as Pendaftar[] || []);
-        } else {
-          throw new Error(response.error || 'Failed to fetch pendaftar');
-        }
-      } catch (err) {
-        // Only set error, don't log to console (expected on logout)
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPendaftar();
-  }, [isAuthenticated]);
-
-  const refreshPendaftar = async () => {
+  const fetchPendaftar = async () => {
     try {
-      setLoading(true);
       const response = await getAllPendaftar();
       if (response.success) {
-        setPendaftar(response.data as Pendaftar[] || []);
+        setPendaftar((response.data as Pendaftar[]) || []);
       } else {
         throw new Error(response.error || 'Failed to fetch pendaftar');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+    } catch (err: any) {
+      setError(err.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
   };
 
-  const addPendaftar = async (newPendaftar: Omit<Pendaftar, 'id'>) => {
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+    fetchPendaftar();
+  }, [isAuthenticated]);
+
+  const refreshPendaftar = async () => {
+    setLoading(true);
+    await fetchPendaftar();
+  };
+
+  const addPendaftar = async (newPendaftar: any, token: string) => {
     try {
-      const response = await addPendaftarService(newPendaftar);
-      if (response.success && response.data) {
-        refreshPendaftar(); // Refresh the list after adding
-        // Since addPendaftarService returns a single Pendaftar, cast if needed
-        const pendaftarData = Array.isArray(response.data) ? response.data[0] : response.data;
-        return pendaftarData?.id;
+      const response = await addPendaftarService(newPendaftar, token);
+      if (response.success) {
+        refreshPendaftar();
+        return response.data;
       } else {
         throw new Error(response.error || 'Failed to add pendaftar');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+    } catch (err: any) {
+      setError(err.message);
       throw err;
     }
   };
 
-  const updatePendaftarById = async (id: string, updatedPendaftar: Partial<Pendaftar>) => {
+  const updatePendaftarById = async (id: string, updatedPendaftar: any) => {
     try {
       const response = await updatePendaftarByIdService(id, updatedPendaftar);
       if (response.success) {
-        refreshPendaftar(); // Refresh the list after updating
+        refreshPendaftar();
       } else {
         throw new Error(response.error || 'Failed to update pendaftar');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+    } catch (err: any) {
+      setError(err.message);
       throw err;
     }
   };
@@ -86,12 +78,12 @@ export const usePendaftar = () => {
     try {
       const response = await deletePendaftarByIdService(id);
       if (response.success) {
-        refreshPendaftar(); // Refresh the list after deleting
+        refreshPendaftar();
       } else {
         throw new Error(response.error || 'Failed to delete pendaftar');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+    } catch (err: any) {
+      setError(err.message);
       throw err;
     }
   };
@@ -100,12 +92,12 @@ export const usePendaftar = () => {
     try {
       const response = await approvePendaftar(id);
       if (response.success) {
-        refreshPendaftar(); // Refresh the list after approving
+        refreshPendaftar();
       } else {
         throw new Error(response.error || 'Failed to approve pendaftar');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+    } catch (err: any) {
+      setError(err.message);
       throw err;
     }
   };
@@ -114,12 +106,12 @@ export const usePendaftar = () => {
     try {
       const response = await rejectPendaftar(id);
       if (response.success) {
-        refreshPendaftar(); // Refresh the list after rejecting
+        refreshPendaftar();
       } else {
         throw new Error(response.error || 'Failed to reject pendaftar');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+    } catch (err: any) {
+      setError(err.message);
       throw err;
     }
   };

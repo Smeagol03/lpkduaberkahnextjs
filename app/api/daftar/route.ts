@@ -27,6 +27,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Verifikasi bot gagal.' }, { status: 400 });
     }
 
+    if (!adminDb) {
+      throw new Error('Firebase Admin SDK tidak terinisialisasi. Cek Environment Variables.');
+    }
+
     const pendaftarRef = adminDb.ref('pendaftar');
     const newPendaftarRef = pendaftarRef.push();
     await newPendaftarRef.set({
@@ -51,6 +55,10 @@ export async function DELETE(request: Request) {
 
     if (!id) return NextResponse.json({ success: false, error: 'ID tidak ditemukan' }, { status: 400 });
 
+    if (!adminDb) {
+      throw new Error('Firebase Admin SDK tidak terinisialisasi.');
+    }
+
     await adminDb.ref(`pendaftar/${id}`).remove();
     return NextResponse.json({ success: true, message: 'Pendaftar berhasil dihapus' });
   } catch (error: any) {
@@ -67,17 +75,19 @@ export async function PUT(request: Request) {
 
     if (!id) return NextResponse.json({ success: false, error: 'ID tidak ditemukan' }, { status: 400 });
 
+    if (!adminDb) {
+      throw new Error('Firebase Admin SDK tidak terinisialisasi.');
+    }
+
     const pendaftarRef = adminDb.ref(`pendaftar/${id}`);
 
     if (action === 'approve') {
-      // Logika Approve: Update status + Tambah ke Peserta
       const snapshot = await pendaftarRef.get();
       if (!snapshot.exists()) return NextResponse.json({ success: false, error: 'Data tidak ditemukan' }, { status: 404 });
 
       const pendaftarData = snapshot.val();
       const timestamp = new Date().toISOString();
 
-      // Multi-path update (Atomic)
       const newPesertaId = adminDb.ref('peserta').push().key;
       const multiUpdates: any = {};
       
@@ -95,7 +105,6 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: true, message: 'Pendaftar disetujui' });
 
     } else {
-      // Update biasa
       await pendaftarRef.update(updates);
       return NextResponse.json({ success: true, message: 'Pendaftar berhasil diupdate' });
     }
