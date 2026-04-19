@@ -151,9 +151,20 @@ export default function PendaftarDetailPage() {
             Edit
           </button>
           <button
-            onClick={() => {
+            onClick={async () => {
               if (confirm('Apakah Anda yakin ingin menghapus pendaftar ini?')) {
-                // Implementasi hapus pendaftar
+                try {
+                  const { deletePendaftarById } = await import('@/services/pendaftarService');
+                  const res = await deletePendaftarById(id as string);
+                  if (res.success) {
+                    alert('Berhasil dihapus');
+                    router.push('/admin/pendaftar');
+                  } else {
+                    alert('Gagal: ' + res.error);
+                  }
+                } catch (err: any) {
+                  alert('Error: ' + err.message);
+                }
               }
             }}
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
