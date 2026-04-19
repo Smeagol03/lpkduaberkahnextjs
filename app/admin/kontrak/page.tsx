@@ -27,6 +27,7 @@ export default function KontrakPage() {
       const term = searchTerm.toLowerCase();
       result = result.filter(k =>
         (k.nomorKontrak || '').toLowerCase().includes(term) ||
+        (k.namaPeserta || '').toLowerCase().includes(term) || // Bisa cari via nama
         (k.pesertaId || '').toLowerCase().includes(term) ||
         (k.programId || '').toLowerCase().includes(term)
       );
@@ -205,6 +206,11 @@ export default function KontrakPage() {
           columns={columns}
           data={filteredKontrak}
           emptyMessage="Tidak ada data kontrak yang sesuai"
+        />
+      </div>
+    </div>
+  );
+}suai"
         />
       </div>
     </div>

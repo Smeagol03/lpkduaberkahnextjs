@@ -10,9 +10,16 @@ import StatusBadge from '@/components/admin/StatusBadge';
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  
+  // OPTIMASI: Di masa depan, hook ini sebaiknya mendukung limitasi (misal: usePeserta({ limit: 5 }))
+  // Untuk sekarang, kita tetap gunakan yang ada tapi pastikan UI tidak berat.
   const { peserta, loading: pesertaLoading } = usePeserta();
   const { programs, loading: programLoading } = useProgram();
   const { pendaftar, loading: pendaftarLoading } = usePendaftar();
+
+  // Membatasi data yang dirender di UI agar browser tidak freeze
+  const recentGraduates = programs.slice(0, 5);
+  const recentApplicants = pendaftar.slice(0, 5);
 
   const totalPeserta = peserta.length;
   const pesertaAktif = peserta.filter(p => p.statusPeserta === 'aktif').length;

@@ -17,6 +17,7 @@ export interface Kontrak {
   id?: string;
   nomorKontrak: string;
   pesertaId: string;
+  namaPeserta?: string; // Denormalisasi: simpan nama di sini agar tidak perlu fetch N+1
   programId: string;
   tanggalMulai: string;
   tanggalSelesai: string;
