@@ -9,37 +9,10 @@ import { usePendaftar } from '@/hooks/usePendaftar';
 import StatusBadge from '@/components/admin/StatusBadge';
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const { user, isAuthenticated, isLoading, checkSession } = useAuth();
+  const { user } = useAuth();
   const { peserta, loading: pesertaLoading } = usePeserta();
   const { programs, loading: programLoading } = useProgram();
   const { pendaftar, loading: pendaftarLoading } = usePendaftar();
-  const [isChecking, setIsChecking] = useState(true);
-
-  useEffect(() => {
-    const validateSession = async () => {
-      if (!isLoading) {
-        if (!isAuthenticated) {
-          const hasValidSession = await checkSession();
-          if (!hasValidSession) {
-            router.push('/login');
-            return;
-          }
-        }
-        setIsChecking(false);
-      }
-    };
-
-    validateSession();
-  }, [isAuthenticated, isLoading, checkSession, router]);
-
-  if (isLoading || isChecking || !isAuthenticated) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
-      </div>
-    );
-  }
 
   const totalPeserta = peserta.length;
   const pesertaAktif = peserta.filter(p => p.statusPeserta === 'aktif').length;
