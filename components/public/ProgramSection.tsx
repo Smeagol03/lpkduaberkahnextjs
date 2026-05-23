@@ -97,6 +97,7 @@ export default function ProgramSection() {
     { title: 'Paket 3', price: 'Rp. 6.000.000', trainingsCount: '24 Pelatihan', coverImage: '/img/paket/cover/Paket3.jpg', slug: 'paket3', popular: false },
     { title: 'Paket 4', price: 'Rp. 14.000.000', trainingsCount: '26 Pelatihan', coverImage: '/img/paket/cover/Paket4.jpg', slug: 'paket4', popular: false },
     { title: 'Paket 5', price: 'Rp. 16.000.000', trainingsCount: 'Lengkap', coverImage: '/img/paket/cover/Paket5.jpg', slug: 'paket5', popular: true },
+    { title: 'Paket Sablon DTF', price: '-', trainingsCount: '16 Pelatihan', coverImage: '/img/paket/cover/PaketSablon.webp', slug: 'paket-sablon-dtf', popular: false },
   ];
 
   return (
@@ -200,7 +201,7 @@ export default function ProgramSection() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

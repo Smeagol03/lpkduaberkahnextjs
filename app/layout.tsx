@@ -1,9 +1,6 @@
 import "./globals.css";
-import { Fredoka } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "react-hot-toast";
-
-const fredoka = Fredoka({ subsets: ["latin"], variable: "--font-fredoka" });
 
 const siteUrl = "https://lpkduaberkah.com";
 
@@ -157,12 +154,15 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${fredoka.variable} font-sans`}>
+      <body className="font-sans" style={{ '--font-fredoka': "'Fredoka', sans-serif" } as React.CSSProperties}>
         {children}
         <Toaster
           position="top-right"

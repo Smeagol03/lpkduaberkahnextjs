@@ -199,6 +199,7 @@ export default function KRSPage() {
     { value: 'paket3', label: 'Paket 3' },
     { value: 'paket4', label: 'Paket 4' },
     { value: 'paket5', label: 'Paket 5' },
+    { value: 'paket-sablon-dtf', label: 'Paket Sablon DTF' },
   ];
 
   if (loading) {

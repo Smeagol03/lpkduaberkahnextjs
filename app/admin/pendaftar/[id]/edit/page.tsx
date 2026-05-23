@@ -364,6 +364,7 @@ export default function EditPendaftarPage() {
                 <option value="paket3">PAKET 3</option>
                 <option value="paket4">PAKET 4</option>
                 <option value="paket5">PAKET 5</option>
+                <option value="paket-sablon-dtf">PAKET SABLON DTF</option>
               </select>
             </div>
 

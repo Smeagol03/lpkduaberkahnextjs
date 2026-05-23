@@ -98,6 +98,13 @@ export default function PaketPage() {
             coverImage="/img/paket/cover/Paket5.jpg"
             slug="paket5"
           />
+          <PaketCard
+            title="Paket Sablon DTF"
+            price="-"
+            trainingsCount="16 Pelatihan"
+            coverImage="/img/paket/cover/PaketSablon.webp"
+            slug="paket-sablon-dtf"
+          />
         </div>
 
         <div className="mt-12 bg-blue-50 p-6 rounded-xl text-center">

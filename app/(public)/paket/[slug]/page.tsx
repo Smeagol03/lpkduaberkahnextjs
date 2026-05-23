@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import PaketSablonDetail from '@/components/public/PaketSablonDetail';
 
 interface Params {
   slug: string;
@@ -44,11 +45,20 @@ const paketData: Record<string, { image: string; title: string; description: str
     price: "Rp 16.000.000",
     modules: 30
   },
+  'paket-sablon-dtf': {
+    image: "/img/paket/cover/PaketSablon.webp",
+    title: "Paket Komplit Wirausaha Sablon DTF",
+    description: "Paket pelatihan komprehensif wirausaha sablon DTF dengan 16 materi pelatihan praktis untuk mencetak wirausahawan sablon mandiri.",
+    price: "-",
+    modules: 16
+  },
 };
 
 // Extract price as number for schema
 const getPriceInRupiah = (price: string): number => {
-  return parseInt(price.replace(/[^0-9]/g, ''));
+  if (price === '-') return 0;
+  const num = parseInt(price.replace(/[^0-9]/g, ''));
+  return isNaN(num) ? 0 : num;
 };
 
 export async function generateMetadata(
@@ -160,6 +170,23 @@ export default async function PaketDetailPage(
       }
     ]
   };
+
+  if (slug === 'paket-sablon-dtf') {
+    return (
+      <>
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+        <PaketSablonDetail />
+      </>
+    );
+  }
 
   return (
     <div className="min-h-screen py-12">
